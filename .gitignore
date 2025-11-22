@@ -1,0 +1,60 @@
+# Build artifacts
+*.o
+*.ko
+*.so
+*.a
+*.out
+*.elf
+*.bin
+
+# Build artifact directories
+/dist/
+*.mod
+*.mod.c
+build/*.o
+build/*.a
+
+# Kernel build
+vmlinux
+vmlinux.lds
+System.map
+.config
+.config.old
+tags
+TAGS
+cscope.*
+
+# Module symbols
+Module.symvers
+modules.order
+
+# IDE and editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# OS files
+.AppleDouble
+.LSOverride
+Thumbs.db
+
+# Dependencies and libraries
+/kernel/linux/
+/kernel/*.tar.*
+/kernel/*.zip
+
+# Temporary files
+*.tmp
+*.bak
+.#*
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Documentation
+/docs/_build/

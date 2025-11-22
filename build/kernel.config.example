@@ -1,0 +1,36 @@
+# Example Linux Kernel Configuration
+# This is a minimal example configuration for K1OS project
+#
+# To use this configuration:
+# 1. Copy to kernel/linux/.config
+# 2. Run: make oldconfig
+# 3. Run: make
+#
+# This is a placeholder showing where kernel configuration would go
+
+CONFIG_64BIT=y
+CONFIG_X86_64=y
+CONFIG_GENERIC_BUG=y
+CONFIG_GENERIC_BUG_RELATIVE_POINTERS=y
+
+# Filesystems
+CONFIG_EXT4_FS=y
+CONFIG_EXT4_FS_POSIX_ACL=y
+CONFIG_EXT4_FS_SECURITY=y
+
+# Networking
+CONFIG_INET=y
+CONFIG_UNIX=y
+
+# Drivers - Basic platform support
+CONFIG_ACPI=y
+CONFIG_PCI=y
+
+# Console and TTY
+CONFIG_VT=y
+CONFIG_SERIAL_8250=y
+CONFIG_SERIAL_8250_CONSOLE=y
+
+# Debug and logging
+CONFIG_DEBUG_INFO=y
+CONFIG_DEBUG_KERNEL=y
