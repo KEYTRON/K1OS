@@ -34,6 +34,10 @@ fetch() {
         log_info "Extracting tmux..."
         mkdir -p "${BUILD_DIR}"
         tar -xzf "${PKG_DIR}/tmux-${TMUX_VERSION}.tar.gz" -C "${BUILD_DIR}" --strip-components=1
+        # Патч: заменяем setlocale(LC_CTYPE, "") на setlocale(LC_CTYPE, "C")
+        # чтобы tmux работал без locale данных в rootfs
+        sed -i 's/setlocale(LC_CTYPE, "")/setlocale(LC_CTYPE, "C")/' "${BUILD_DIR}/tmux.c"
+        log_info "Applied locale patch"
     fi
 }
 
