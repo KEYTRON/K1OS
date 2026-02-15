@@ -67,6 +67,7 @@ Thumbs.db
 /rootfs/lib
 /rootfs/lib64/
 /rootfs/usr/
+!/rootfs/usr/share/terminfo/
 /rootfs/var/
 /rootfs/linuxrc
 # Rootfs etc — игнорируем сгенерированные файлы, но не наши конфиги
