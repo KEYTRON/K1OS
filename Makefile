@@ -1,4 +1,4 @@
-.PHONY: all clean help kernel rootfs iso packages busybox runit fish modules
+.PHONY: all clean help kernel rootfs iso packages busybox runit fish curl git dropbear modules
 
 KERNEL_DIR  := $(CURDIR)/kernel/linux-6.17.9
 CUSTOM_DIR  := $(CURDIR)/custom
@@ -57,7 +57,7 @@ kernel:
 	@echo "[kernel] Build complete: $(KERNEL_DIR)/arch/x86/boot/bzImage"
 
 # Rootfs build (all components)
-rootfs: busybox runit fish
+rootfs: busybox runit fish curl git dropbear
 	@bash $(SCRIPTS_DIR)/build-rootfs.sh
 
 # Individual packages
@@ -69,6 +69,15 @@ runit:
 
 fish:
 	@bash $(CURDIR)/packages/fish/build.sh all
+
+curl:
+	@bash $(CURDIR)/packages/curl/build.sh all
+
+git:
+	@bash $(CURDIR)/packages/git/build.sh all
+
+dropbear:
+	@bash $(CURDIR)/packages/dropbear/build.sh all
 
 # ISO image
 iso:

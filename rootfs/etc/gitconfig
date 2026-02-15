@@ -1,0 +1,9 @@
+[core]
+    editor = vi
+    autocrlf = input
+[init]
+    defaultBranch = main
+[color]
+    ui = auto
+[pull]
+    rebase = false

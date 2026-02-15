@@ -54,6 +54,12 @@ Thumbs.db
 /packages/runit/*.tar.*
 /packages/fish/build/
 /packages/fish/*.tar.*
+/packages/curl/build/
+/packages/curl/*.tar.*
+/packages/git/build/
+/packages/git/*.tar.*
+/packages/dropbear/build/
+/packages/dropbear/*.tar.*
 
 # Rootfs (generated — бинарники и библиотеки)
 /rootfs/bin/
