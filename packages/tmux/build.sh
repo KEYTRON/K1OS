@@ -34,9 +34,22 @@ fetch() {
         log_info "Extracting tmux..."
         mkdir -p "${BUILD_DIR}"
         tar -xzf "${PKG_DIR}/tmux-${TMUX_VERSION}.tar.gz" -C "${BUILD_DIR}" --strip-components=1
-        # Патч: заменяем setlocale(LC_CTYPE, "") на setlocale(LC_CTYPE, "C")
-        # чтобы tmux работал без locale данных в rootfs
-        sed -i 's/setlocale(LC_CTYPE, "")/setlocale(LC_CTYPE, "C")/' "${BUILD_DIR}/tmux.c"
+        # Патч: убираем проверку locale — tmux работает без locale данных в rootfs
+        # Заменяем блок проверки на setlocale(LC_CTYPE, "C") без проверки UTF-8
+        python3 - "${BUILD_DIR}/tmux.c" << 'PYEOF'
+import sys, re
+f = open(sys.argv[1])
+src = f.read()
+f.close()
+# Убираем if (setlocale...) { errx(...); } блок и проверку CODESET
+src = re.sub(
+    r'if \(setlocale\(LC_CTYPE.*?errx\(1, "need UTF-8.*?\);\s*\}',
+    'setlocale(LC_CTYPE, "C");',
+    src, flags=re.DOTALL
+)
+open(sys.argv[1], 'w').write(src)
+print("Locale patch applied")
+PYEOF
         log_info "Applied locale patch"
     fi
 }
