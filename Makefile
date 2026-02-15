@@ -59,7 +59,7 @@ kernel:
 	@echo "[kernel] Build complete: $(KERNEL_DIR)/arch/x86/boot/bzImage"
 
 # Rootfs build (all components)
-rootfs: busybox runit fish curl git dropbear tmux nano
+rootfs: busybox runit fish curl git dropbear tmux nano python3 htop
 	@bash $(SCRIPTS_DIR)/build-rootfs.sh
 
 # Individual packages
@@ -86,6 +86,12 @@ tmux:
 
 nano:
 	@bash $(CURDIR)/packages/nano/build.sh all
+
+python3:
+	@bash $(CURDIR)/packages/python3/build.sh all
+
+htop:
+	@bash $(CURDIR)/packages/htop/build.sh all
 
 # ISO image
 iso:
