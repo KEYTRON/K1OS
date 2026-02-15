@@ -42,6 +42,7 @@ build() {
     cd "${BUILD_DIR}"
     ./configure \
         --prefix=/usr \
+        --libdir=/usr/lib64 \
         --enable-shared \
         --with-ensurepip=install \
         --with-openssl=/usr \
@@ -60,6 +61,15 @@ pkg_install() {
     # Симлинки
     ln -sf python3 "${ROOTFS_DIR}/usr/bin/python" 2>/dev/null || true
     ln -sf pip3 "${ROOTFS_DIR}/usr/bin/pip" 2>/dev/null || true
+
+    # Python устанавливает stdlib в lib/, но ищет в lib64/ (Fedora-специфично)
+    # Копируем stdlib в lib64/python3.13/
+    PY_VER=$(ls "${ROOTFS_DIR}/usr/lib/" | grep "python3" | head -1)
+    if [ -n "${PY_VER}" ] && [ -d "${ROOTFS_DIR}/usr/lib/${PY_VER}" ]; then
+        mkdir -p "${ROOTFS_DIR}/usr/lib64/${PY_VER}"
+        cp -rn "${ROOTFS_DIR}/usr/lib/${PY_VER}/." "${ROOTFS_DIR}/usr/lib64/${PY_VER}/"
+        log_info "Copied stdlib to lib64/${PY_VER}"
+    fi
 
     # Копируем зависимые библиотеки
     for lib in $(ldd "${ROOTFS_DIR}/usr/bin/python3" 2>/dev/null | grep "=>" | awk '{print $3}' | grep -v "^$"); do
