@@ -8,6 +8,7 @@ set -e
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 BUILD_DIR="${SCRIPT_DIR}/build"
 KERNEL_DIR="${SCRIPT_DIR}/kernel"
+KERNEL_SRC="${KERNEL_DIR}/linux-6.17.9"
 CUSTOM_DIR="${SCRIPT_DIR}/custom"
 
 # Color output
@@ -49,14 +50,18 @@ check_prerequisites() {
 build_kernel() {
     log_info "Building Linux kernel..."
 
-    if [ ! -d "${KERNEL_DIR}/linux" ]; then
-        log_error "Kernel source not found at ${KERNEL_DIR}/linux"
-        log_warn "Please add kernel source first"
+    if [ ! -d "${KERNEL_SRC}" ]; then
+        log_error "Kernel source not found at ${KERNEL_SRC}"
         exit 1
     fi
 
-    cd "${KERNEL_DIR}/linux"
-    make -j$(nproc)
+    if [ ! -f "${KERNEL_SRC}/.config" ]; then
+        log_warn "No .config found, copying default config..."
+        cp "${BUILD_DIR}/kernel.config" "${KERNEL_SRC}/.config"
+        make -C "${KERNEL_SRC}" olddefconfig
+    fi
+
+    make -C "${KERNEL_SRC}" -j$(nproc)
 
     log_info "Kernel build completed"
 }

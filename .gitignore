@@ -43,8 +43,43 @@ Thumbs.db
 
 # Dependencies and libraries
 /kernel/linux/
+/kernel/linux-*/
 /kernel/*.tar.*
 /kernel/*.zip
+
+# Package build artifacts
+/packages/busybox/build/
+/packages/busybox/*.tar.*
+/packages/runit/build/
+/packages/runit/*.tar.*
+/packages/fish/build/
+/packages/fish/*.tar.*
+
+# Rootfs (generated — бинарники и библиотеки)
+/rootfs/bin/
+/rootfs/sbin/
+/rootfs/lib
+/rootfs/lib64/
+/rootfs/usr/
+/rootfs/var/
+/rootfs/linuxrc
+# Rootfs etc — игнорируем сгенерированные файлы, но не наши конфиги
+/rootfs/etc/passwd
+/rootfs/etc/shadow
+/rootfs/etc/group
+/rootfs/etc/hostname
+/rootfs/etc/hosts
+/rootfs/etc/shells
+/rootfs/etc/os-release
+/rootfs/etc/issue
+/rootfs/etc/profile
+/rootfs/etc/sv/
+/rootfs/etc/runit/
+
+# ISO build output
+/iso/
+/sysroot/
+/*.iso
 
 # Temporary files
 *.tmp

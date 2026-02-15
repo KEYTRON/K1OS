@@ -1,0 +1,21 @@
+#!/bin/sh
+# runit stage 1 — system initialization
+# Runs once at boot before services start
+
+echo "K1OS booting..."
+
+# Mount essential virtual filesystems
+mount -t proc  none /proc
+mount -t sysfs none /sys
+mount -t devtmpfs none /dev 2>/dev/null || mdev -s
+
+mkdir -p /dev/pts
+mount -t devpts none /dev/pts
+
+# Set hostname
+echo "k1os" > /proc/sys/kernel/hostname
+
+# Bring up loopback
+ip link set lo up 2>/dev/null || true
+
+echo "Stage 1 complete"

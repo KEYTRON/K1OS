@@ -1,0 +1,5 @@
+#!/bin/sh
+# runit stage 2 — run services
+# runit supervises all services in /var/service/
+
+exec runsvdir /var/service

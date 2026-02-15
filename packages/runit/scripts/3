@@ -1,0 +1,14 @@
+#!/bin/sh
+# runit stage 3 — system shutdown/reboot
+
+echo "K1OS shutting down..."
+
+# Sync filesystems
+sync
+
+# Check if rebooting or halting
+if [ -x /etc/runit/reboot ]; then
+    exec /sbin/reboot
+fi
+
+exec /sbin/halt
