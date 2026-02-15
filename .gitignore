@@ -79,7 +79,6 @@ Thumbs.db
 /rootfs/etc/shells
 /rootfs/etc/os-release
 /rootfs/etc/issue
-/rootfs/etc/profile
 /rootfs/etc/sv/
 /rootfs/etc/runit/
 
