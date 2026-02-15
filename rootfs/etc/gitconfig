@@ -7,3 +7,5 @@
     ui = auto
 [pull]
     rebase = false
+[http]
+    sslCAInfo = /etc/ssl/certs/ca-certificates.crt
