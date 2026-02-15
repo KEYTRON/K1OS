@@ -29,6 +29,8 @@ help:
 	@echo "  make busybox    - Build BusyBox userland"
 	@echo "  make runit      - Build runit init system"
 	@echo "  make fish       - Build fish shell"
+	@echo "  make tmux       - Build tmux terminal multiplexer"
+	@echo "  make nano       - Build nano text editor"
 	@echo ""
 	@echo "Custom code:"
 	@echo "  make modules    - Build custom kernel modules"
@@ -57,7 +59,7 @@ kernel:
 	@echo "[kernel] Build complete: $(KERNEL_DIR)/arch/x86/boot/bzImage"
 
 # Rootfs build (all components)
-rootfs: busybox runit fish curl git dropbear
+rootfs: busybox runit fish curl git dropbear tmux nano
 	@bash $(SCRIPTS_DIR)/build-rootfs.sh
 
 # Individual packages
@@ -78,6 +80,12 @@ git:
 
 dropbear:
 	@bash $(CURDIR)/packages/dropbear/build.sh all
+
+tmux:
+	@bash $(CURDIR)/packages/tmux/build.sh all
+
+nano:
+	@bash $(CURDIR)/packages/nano/build.sh all
 
 # ISO image
 iso:
