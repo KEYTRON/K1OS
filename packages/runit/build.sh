@@ -38,7 +38,7 @@ build() {
     package/compile
 }
 
-install() {
+pkg_install() {
     log_info "Installing runit to rootfs..."
     install -Dm755 "${BUILD_DIR}/command/runit"         "${ROOTFS_DIR}/sbin/runit"
     install -Dm755 "${BUILD_DIR}/command/runit-init"    "${ROOTFS_DIR}/sbin/runit-init"
@@ -65,8 +65,8 @@ install() {
 case "${1:-all}" in
     fetch)   fetch ;;
     build)   fetch && build ;;
-    install) fetch && build && install ;;
-    all)     fetch && build && install ;;
+    install) fetch && build && pkg_install ;;
+    all)     fetch && build && pkg_install ;;
     clean)
         log_info "Cleaning runit build..."
         rm -rf "${BUILD_DIR}"

@@ -66,7 +66,7 @@ build() {
     make -j$(nproc) --silent
 }
 
-install() {
+pkg_install() {
     log_info "Installing curl to rootfs..."
     make -C "${BUILD_DIR}" install DESTDIR="${ROOTFS_DIR}" --silent
 
@@ -75,14 +75,22 @@ install() {
         [ -f "$lib" ] && cp -n "$lib" "${ROOTFS_DIR}/lib64/" 2>/dev/null || true
     done
 
+    # CA-сертификаты для HTTPS
+    mkdir -p "${ROOTFS_DIR}/etc/ssl/certs"
+    if [ -f /etc/pki/ca-trust/extracted/pem/tls-ca-bundle.pem ]; then
+        install -m 644 /etc/pki/ca-trust/extracted/pem/tls-ca-bundle.pem \
+           "${ROOTFS_DIR}/etc/ssl/certs/ca-certificates.crt"
+        log_info "CA certificates copied"
+    fi
+
     log_info "curl installed: $(${ROOTFS_DIR}/usr/bin/curl --version 2>/dev/null | head -1 || echo 'OK')"
 }
 
 case "${1:-all}" in
     fetch)   fetch ;;
     build)   check_deps && fetch && build ;;
-    install) check_deps && fetch && build && install ;;
-    all)     check_deps && fetch && build && install ;;
+    install) check_deps && fetch && build && pkg_install ;;
+    all)     check_deps && fetch && build && pkg_install ;;
     clean)   rm -rf "${BUILD_DIR}" ;;
     *) echo "Usage: $0 [fetch|build|install|all|clean]"; exit 1 ;;
 esac

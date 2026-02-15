@@ -40,7 +40,7 @@ build() {
     make -j$(nproc) PROGRAMS="dropbear dbclient dropbearkey scp" --silent
 }
 
-install() {
+pkg_install() {
     log_info "Installing dropbear to rootfs..."
     make -C "${BUILD_DIR}" install \
         DESTDIR="${ROOTFS_DIR}" \
@@ -78,8 +78,8 @@ setup_service() {
 case "${1:-all}" in
     fetch)   fetch ;;
     build)   fetch && build ;;
-    install) fetch && build && install && setup_service ;;
-    all)     fetch && build && install && setup_service ;;
+    install) fetch && build && pkg_install && setup_service ;;
+    all)     fetch && build && pkg_install && setup_service ;;
     clean)   rm -rf "${BUILD_DIR}" ;;
     *) echo "Usage: $0 [fetch|build|install|all|clean]"; exit 1 ;;
 esac

@@ -44,7 +44,7 @@ build() {
     make -C "${BUILD_DIR}" -j$(nproc)
 }
 
-install() {
+pkg_install() {
     log_info "Installing BusyBox to rootfs..."
     make -C "${BUILD_DIR}" install CONFIG_PREFIX="${ROOTFS_DIR}"
     log_info "BusyBox installed to ${ROOTFS_DIR}"
@@ -53,8 +53,8 @@ install() {
 case "${1:-all}" in
     fetch)   fetch ;;
     build)   fetch && build ;;
-    install) fetch && build && install ;;
-    all)     fetch && build && install ;;
+    install) fetch && build && pkg_install ;;
+    all)     fetch && build && pkg_install ;;
     clean)
         log_info "Cleaning BusyBox build..."
         rm -rf "${BUILD_DIR}"

@@ -19,8 +19,8 @@ check_deps() {
     for dep in gcc make autoconf; do
         command -v "$dep" &>/dev/null || { log_error "Missing: $dep"; exit 1; }
     done
-    pkg-config --exists openssl zlib libpcre2-8 2>/dev/null || {
-        log_warn "Install: sudo dnf install openssl-devel zlib-devel pcre2-devel"
+    pkg-config --exists openssl zlib libpcre2-8 libcurl 2>/dev/null || {
+        log_warn "Install: sudo dnf install openssl-devel zlib-devel pcre2-devel libcurl-devel"
         exit 1
     }
     # curl нужен для git clone по https
@@ -64,7 +64,7 @@ build() {
         --silent
 }
 
-install() {
+pkg_install() {
     log_info "Installing git to rootfs..."
     make -C "${BUILD_DIR}" install \
         DESTDIR="${ROOTFS_DIR}" \
@@ -76,6 +76,19 @@ install() {
     for lib in $(ldd "${ROOTFS_DIR}/usr/bin/git" 2>/dev/null | grep "=>" | awk '{print $3}' | grep -v "^$"); do
         [ -f "$lib" ] && cp -n "$lib" "${ROOTFS_DIR}/lib64/" 2>/dev/null || true
     done
+
+    # Копируем зависимые библиотеки для git-remote-https
+    for lib in $(ldd "${ROOTFS_DIR}/usr/libexec/git-core/git-remote-https" 2>/dev/null | grep "=>" | awk '{print $3}' | grep -v "^$"); do
+        [ -f "$lib" ] && cp -n "$lib" "${ROOTFS_DIR}/lib64/" 2>/dev/null || true
+    done
+
+    # CA-сертификаты для HTTPS
+    mkdir -p "${ROOTFS_DIR}/etc/ssl/certs"
+    if [ -f /etc/pki/ca-trust/extracted/pem/tls-ca-bundle.pem ]; then
+        /usr/bin/install -m 644 /etc/pki/ca-trust/extracted/pem/tls-ca-bundle.pem \
+           "${ROOTFS_DIR}/etc/ssl/certs/ca-certificates.crt"
+        log_info "CA certificates copied"
+    fi
 
     # Базовый git конфиг для K1OS
     cat > "${ROOTFS_DIR}/etc/gitconfig" << 'EOF'
@@ -96,8 +109,8 @@ EOF
 case "${1:-all}" in
     fetch)   fetch ;;
     build)   check_deps && fetch && build ;;
-    install) check_deps && fetch && build && install ;;
-    all)     check_deps && fetch && build && install ;;
+    install) check_deps && fetch && build && pkg_install ;;
+    all)     check_deps && fetch && build && pkg_install ;;
     clean)   rm -rf "${BUILD_DIR}" ;;
     *) echo "Usage: $0 [fetch|build|install|all|clean]"; exit 1 ;;
 esac

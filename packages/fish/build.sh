@@ -56,7 +56,7 @@ build() {
     ninja -C "${BUILD_DIR}/cmake-build" -j$(nproc)
 }
 
-install() {
+pkg_install() {
     log_info "Installing fish to rootfs..."
     DESTDIR="${ROOTFS_DIR}" ninja -C "${BUILD_DIR}/cmake-build" install
 
@@ -70,8 +70,8 @@ install() {
 case "${1:-all}" in
     fetch)   fetch ;;
     build)   check_deps && fetch && build ;;
-    install) check_deps && fetch && build && install ;;
-    all)     check_deps && fetch && build && install ;;
+    install) check_deps && fetch && build && pkg_install ;;
+    all)     check_deps && fetch && build && pkg_install ;;
     clean)
         log_info "Cleaning fish build..."
         rm -rf "${BUILD_DIR}"
