@@ -1,0 +1,11 @@
+# K1OS nanorc
+set linenumbers
+set mouse
+set smooth
+set tabsize 4
+set tabstospaces
+set autoindent
+set softwrap
+
+# Syntax highlighting (включаем все)
+include "/usr/share/nano/*.nanorc"
