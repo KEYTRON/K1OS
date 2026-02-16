@@ -36,8 +36,10 @@ help:
 	@echo "  make modules    - Build custom kernel modules"
 	@echo ""
 	@echo "Utilities:"
-	@echo "  make clean      - Clean all build artifacts"
-	@echo "  make qemu       - Test in QEMU (requires k1os.iso)"
+	@echo "  make clean        - Clean all build artifacts"
+	@echo "  make qemu         - Test in QEMU (RAM mode)"
+	@echo "  make make-persist - Create persist.qcow2 for QEMU"
+	@echo "  make qemu-persist - Test in QEMU with persistent storage"
 	@echo ""
 
 # Full build
@@ -121,6 +123,21 @@ qemu-nographic:
 		exit 1; \
 	fi
 	qemu-system-x86_64 -m 512M -cdrom $(CURDIR)/k1os.iso -nographic
+
+# Persistent storage: создать qcow2 + запустить QEMU с ним
+make-persist:
+	@bash $(SCRIPTS_DIR)/make-persist.sh $(CURDIR)/persist.qcow2 2048
+
+qemu-persist:
+	@if [ ! -f "$(CURDIR)/k1os.iso" ]; then \
+		echo "ERROR: k1os.iso not found. Run: make iso"; \
+		exit 1; \
+	fi
+	@if [ ! -f "$(CURDIR)/persist.qcow2" ]; then \
+		echo "No persist.qcow2 found. Run: make make-persist"; \
+		exit 1; \
+	fi
+	qemu-system-x86_64 -m 512M -cdrom $(CURDIR)/k1os.iso -hda $(CURDIR)/persist.qcow2 -vga virtio -enable-kvm
 
 # Clean
 clean:
