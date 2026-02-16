@@ -63,7 +63,8 @@ Thumbs.db
 
 # Rootfs (generated — бинарники и библиотеки)
 /rootfs/bin/
-/rootfs/sbin/
+/rootfs/sbin/*
+!/rootfs/sbin/init
 /rootfs/lib
 /rootfs/lib64/
 /rootfs/usr/

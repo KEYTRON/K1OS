@@ -1,0 +1,29 @@
+#!/bin/sh
+# K1OS /sbin/init — stage 2, PID 1 после switch_root
+# Виртуальные ФС уже смонтированы initramfs-ом
+
+# Locale
+export LANG=C
+export LC_ALL=C
+
+# Hostname
+echo "k1os" > /proc/sys/kernel/hostname
+
+# tmpfs для /tmp и /run (если ещё не смонтированы)
+mount -t tmpfs -o size=75% none /tmp  2>/dev/null || true
+mount -t tmpfs -o size=10% none /run  2>/dev/null || true
+
+# Loopback
+ip link set lo up 2>/dev/null || true
+
+# Запускаем runsvdir (runit сервисы)
+runsvdir /var/service &
+
+# Приветствие на консолях
+for tty in /dev/tty1 /dev/ttyS0; do
+    [ -c "$tty" ] && cat /etc/issue > "$tty" 2>/dev/null || true
+done
+
+# getty на tty1 и ttyS0
+/sbin/getty -n -l /usr/bin/fish 115200 ttyS0 &
+exec /sbin/getty -n -l /usr/bin/fish 38400 tty1

@@ -90,6 +90,7 @@ build_squashfs() {
     mksquashfs "${ROOTFS_DIR}" "${ISO_DIR}/system.squashfs" \
         -comp xz -Xdict-size 100% \
         -noappend \
+        -no-xattrs \
         -e "${ROOTFS_DIR}/init" \
         2>/dev/null
     log_info "squashfs size: $(du -sh ${ISO_DIR}/system.squashfs | cut -f1)"
