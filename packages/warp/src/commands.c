@@ -306,8 +306,11 @@ int cmd_pack(int argc, char **argv) {
 
     json_t *jm = json_parse(ms);
     free(ms);
-    const char *pkg_name = json_str(jm, "name",    "unknown");
-    const char *pkg_ver  = json_str(jm, "version", "0.0.0");
+    char pkg_name[WARP_MAX_NAME], pkg_ver[WARP_MAX_NAME];
+    strncpy(pkg_name, json_str(jm, "name",    "unknown"), WARP_MAX_NAME-1);
+    strncpy(pkg_ver,  json_str(jm, "version", "0.0.0"),   WARP_MAX_NAME-1);
+    pkg_name[WARP_MAX_NAME-1] = pkg_ver[WARP_MAX_NAME-1] = '\0';
+    json_free(jm); jm = NULL;
 
     char out_name[512];
     snprintf(out_name, sizeof(out_name), "%s-%s-%s.warp", pkg_name, pkg_ver, WARP_ARCH);
@@ -328,8 +331,6 @@ int cmd_pack(int argc, char **argv) {
     char sha256[WARP_SHA256_HEX];
     warp_sha256_file(out_name, sha256);
     long sz = file_size(out_name);
-
-    json_free(jm);
 
     warp_ok("Created: %s", out_name);
     printf("  SHA256: %s\n", sha256);

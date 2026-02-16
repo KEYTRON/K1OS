@@ -7,7 +7,7 @@
 /* ── version & paths ─────────────────────────────────────────── */
 #define WARP_VERSION     "0.1.0"
 #define WARP_STORE_DIR   "/var/lib/warp"
-#define WARP_INDEX_URL   "https://github.com/KEYTRON/K1OS/releases/latest/download/index.json"
+#define WARP_INDEX_URL   "https://github.com/KEYTRON/K1OS/releases/download/packages-v1/index.json"
 #define WARP_ARCH        "x86_64"
 
 /* ── compile-time flags ──────────────────────────────────────── */
