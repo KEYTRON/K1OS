@@ -16,6 +16,13 @@ mount -t tmpfs -o size=10% none /run  2>/dev/null || true
 # Loopback
 ip link set lo up 2>/dev/null || true
 
+# Обработчики сигналов — reboot/poweroff/halt
+do_reboot()  { echo "[k1os] Rebooting...";  sync; reboot -f; }
+do_poweroff(){ echo "[k1os] Powering off..."; sync; poweroff -f; }
+
+trap do_reboot  TERM
+trap do_poweroff INT
+
 # Запускаем runsvdir (runit сервисы)
 runsvdir /var/service &
 
@@ -26,4 +33,9 @@ done
 
 # getty на tty1 и ttyS0
 /sbin/getty -n -l /usr/bin/fish 115200 ttyS0 &
-exec /sbin/getty -n -l /usr/bin/fish 38400 tty1
+/sbin/getty -n -l /usr/bin/fish 38400 tty1 &
+
+# PID 1 ждёт — обрабатывает сигналы
+while true; do
+    wait
+done
