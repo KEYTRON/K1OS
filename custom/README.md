@@ -1,48 +1,53 @@
 # Custom Code & Extensions
 
-## Описание
+Language: English (default) | [Русская версия](README.ru.md)
 
-Этот каталог содержит собственный код, расширения и модификации для Linux kernel.
+## Description
 
-## Структура
+This directory is intended for optional K1OS extensions: modules, patches, and helper tools.
+
+Important: K1OS is not built around heavy Linux kernel rework. The default approach is minimal kernel changes and moving product logic into user space and OS integration layers.
+
+## Structure
 
 ### modules/
-Собственные kernel modules, разрабатываемые для проекта K1OS.
+Custom kernel modules for K1OS-specific use cases (when needed).
 
-Каждый модуль должен содержать:
-- `Makefile` - конфигурация сборки
-- `*.c` - исходные коды
-- `README.md` - документация модуля
+Each module should include:
+- `Makefile` - build configuration
+- `*.c` - source files
+- `README.md` - module documentation
 
 ### patches/
-Патчи, применяемые к Linux kernel для интеграции с собственным кодом.
+Targeted Linux kernel patches, only when the task cannot be solved through configuration or a user space approach.
 
-Формат:
-```
-patch-name.patch  - unified diff формат
-README.md         - описание и инструкции применения
+Format:
+
+```text
+patch-name.patch  - unified diff format
+README.md         - rationale and apply instructions
 ```
 
 ### tools/
-Утилиты и инструменты для управления и тестирования kernel.
+Utilities for developing, validating, and integrating custom extensions.
 
-## Разработка
+## Development
 
-### Создание нового модуля
+### Create a New Module
 
 ```bash
 mkdir modules/my_module
 cd modules/my_module
-# Добавить исходные коды и Makefile
+# add source files and Makefile
 ```
 
-### Применение патча
+### Apply a Patch
 
 ```bash
 cd kernel
 patch -p1 < ../custom/patches/patch-name.patch
 ```
 
-## Лицензирование
+## License
 
-Весь код в этом каталоге должен быть совместим с Apache License 2.0.
+All code in this directory must be compatible with Apache License 2.0.
