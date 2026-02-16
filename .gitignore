@@ -20,6 +20,7 @@ vmlinux.lds
 System.map
 .config
 .config.old
+!/rootfs/root/.config/
 tags
 TAGS
 cscope.*
