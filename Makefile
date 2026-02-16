@@ -1,4 +1,4 @@
-.PHONY: all clean help kernel rootfs iso packages busybox runit fish curl git dropbear modules
+.PHONY: all clean help kernel rootfs iso packages busybox runit fish curl git dropbear modules warp
 
 KERNEL_DIR  := $(CURDIR)/kernel/linux-6.17.9
 CUSTOM_DIR  := $(CURDIR)/custom
@@ -31,6 +31,7 @@ help:
 	@echo "  make fish       - Build fish shell"
 	@echo "  make tmux       - Build tmux terminal multiplexer"
 	@echo "  make nano       - Build nano text editor"
+	@echo "  make warp       - Build warp package manager"
 	@echo ""
 	@echo "Custom code:"
 	@echo "  make modules    - Build custom kernel modules"
@@ -61,7 +62,7 @@ kernel:
 	@echo "[kernel] Build complete: $(KERNEL_DIR)/arch/x86/boot/bzImage"
 
 # Rootfs build (all components)
-rootfs: busybox runit fish curl git dropbear tmux nano python3 htop
+rootfs: busybox runit fish curl git dropbear tmux nano python3 htop warp
 	@bash $(SCRIPTS_DIR)/build-rootfs.sh
 
 # Individual packages
@@ -94,6 +95,9 @@ python3:
 
 htop:
 	@bash $(CURDIR)/packages/htop/build.sh all
+
+warp:
+	@bash $(CURDIR)/packages/warp/build.sh all
 
 # ISO image
 iso:

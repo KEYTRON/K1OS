@@ -48,6 +48,8 @@ Thumbs.db
 /kernel/*.zip
 
 # Package build artifacts
+/packages/warp/warp
+/packages/warp/src/*.o
 /packages/busybox/build/
 /packages/busybox/*.tar.*
 /packages/runit/build/
