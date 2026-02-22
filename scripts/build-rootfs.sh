@@ -65,7 +65,8 @@ EOF
 export PATH="/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin"
 export HOME="/root"
 export TERM="xterm-256color"
-export LANG="en_US.UTF-8"
+export LANG="C.UTF-8"
+export LC_ALL="C.UTF-8"
 EOF
 
     # /etc/issue — login banner
@@ -96,8 +97,93 @@ EOF
 
 create_inittab() {
     log_info "Setting up runit init..."
-    # Symlink runit-init as /sbin/init
-    ln -sf runit-init "${ROOTFS_DIR}/sbin/init" 2>/dev/null || true
+    # После BusyBox — иначе BusyBox перезапишет симлинк своим
+    ln -sf runit-init "${ROOTFS_DIR}/sbin/init"
+}
+
+create_system_scripts() {
+    log_info "Creating system scripts..."
+
+    # login-fish: wrapper для getty — задаёт HOME, cd /root, запускает fish --login
+    install -Dm755 /dev/stdin "${ROOTFS_DIR}/sbin/login-fish" << 'EOF'
+#!/bin/sh
+export HOME=/root
+export USER=root
+export LOGNAME=root
+export SHELL=/usr/bin/fish
+export PATH=/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin
+cd /root
+exec /usr/bin/fish --login
+EOF
+
+    # reboot / halt / poweroff через runit
+    # rm -f сначала — файлы могут быть BusyBox-симлинками на ../bin/busybox
+    rm -f "${ROOTFS_DIR}/sbin/reboot" "${ROOTFS_DIR}/sbin/halt" "${ROOTFS_DIR}/sbin/poweroff"
+
+    install -Dm755 /dev/stdin "${ROOTFS_DIR}/sbin/reboot" << 'EOF'
+#!/bin/sh
+sync
+touch /etc/runit/reboot
+exec /sbin/runit-init 6
+EOF
+
+    install -Dm755 /dev/stdin "${ROOTFS_DIR}/sbin/halt" << 'EOF'
+#!/bin/sh
+sync
+exec /sbin/runit-init 0
+EOF
+
+    install -Dm755 /dev/stdin "${ROOTFS_DIR}/sbin/poweroff" << 'EOF'
+#!/bin/sh
+sync
+exec /sbin/runit-init 0
+EOF
+
+    # sudo — уже root, просто exec
+    install -Dm755 /dev/stdin "${ROOTFS_DIR}/usr/bin/sudo" << 'EOF'
+#!/bin/sh
+exec "$@"
+EOF
+}
+
+create_services() {
+    log_info "Setting up runit services..."
+
+    # getty на tty0
+    mkdir -p "${ROOTFS_DIR}/etc/sv/getty-tty0"
+    install -Dm755 /dev/stdin "${ROOTFS_DIR}/etc/sv/getty-tty0/run" << 'EOF'
+#!/bin/sh
+exec /sbin/getty -n -l /sbin/login-fish 38400 tty0 linux
+EOF
+
+    # getty на ttyS0 (serial console)
+    mkdir -p "${ROOTFS_DIR}/etc/sv/getty-ttyS0"
+    install -Dm755 /dev/stdin "${ROOTFS_DIR}/etc/sv/getty-ttyS0/run" << 'EOF'
+#!/bin/sh
+exec /sbin/getty -n -l /sbin/login-fish 115200 ttyS0 vt100
+EOF
+
+    # Активируем сервисы
+    mkdir -p "${ROOTFS_DIR}/var/service"
+    ln -sf /etc/sv/getty-tty0  "${ROOTFS_DIR}/var/service/getty-tty0"  2>/dev/null || true
+    ln -sf /etc/sv/getty-ttyS0 "${ROOTFS_DIR}/var/service/getty-ttyS0" 2>/dev/null || true
+    ln -sf /etc/sv/sshd         "${ROOTFS_DIR}/var/service/sshd"        2>/dev/null || true
+}
+
+copy_libs() {
+    log_info "Copying shared libraries..."
+    mkdir -p "${ROOTFS_DIR}/lib64"
+
+    # Собираем все .so зависимости всех бинарников
+    for bin in "${ROOTFS_DIR}/usr/bin/"* "${ROOTFS_DIR}/usr/sbin/"*; do
+        [ -f "$bin" ] || continue
+        ldd "$bin" 2>/dev/null | grep "=>" | awk '{print $3}' | grep -v '^$' | while read lib; do
+            [ -f "$lib" ] && cp -n "$lib" "${ROOTFS_DIR}/lib64/" 2>/dev/null || true
+        done
+    done
+
+    # Динамический линкер — обязателен
+    cp -f /lib64/ld-linux-x86-64.so.2 "${ROOTFS_DIR}/lib64/"
 }
 
 build_packages() {
@@ -117,8 +203,11 @@ main() {
     log_info "Building K1OS rootfs..."
     create_base_dirs
     create_base_config
-    create_inittab
     build_packages
+    create_inittab        # после BusyBox — иначе симлинк перезапишется
+    create_system_scripts
+    create_services
+    copy_libs
     log_info "rootfs build complete: ${ROOTFS_DIR}"
 }
 

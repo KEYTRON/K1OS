@@ -63,6 +63,14 @@ Thumbs.db
 /packages/git/*.tar.*
 /packages/dropbear/build/
 /packages/dropbear/*.tar.*
+/packages/tmux/build/
+/packages/tmux/*.tar.*
+/packages/nano/build/
+/packages/nano/*.tar.*
+/packages/python3/build/
+/packages/python3/*.tar.*
+/packages/htop/build/
+/packages/htop/*.tar.*
 
 # Rootfs (generated — бинарники и библиотеки)
 /rootfs/bin/

@@ -33,8 +33,14 @@ fetch() {
 
 build() {
     log_info "Building runit..."
-    # runit uses package/compile build system
     cd "${BUILD_DIR}"
+
+    # Патч для GCC 14+: runit 2.2.0 использует K&R C стиль
+    # -std=gnu89 разрешает пустые прототипы как "unspecified args"
+    if [ -f "compile/conf-cc" ]; then
+        sed -i 's/^gcc -O2.*/gcc -O2 -std=gnu89 -w/' "compile/conf-cc"
+    fi
+
     package/compile
 }
 
