@@ -12,12 +12,3 @@
 # if status is-interactive
 #   ...
 # end
-
-# K1OS system PATH
-fish_add_path /usr/local/bin /usr/bin /bin /usr/local/sbin /usr/sbin /sbin
-
-# K1OS environment
-set -gx TERM xterm-256color
-set -gx LANG C.UTF-8
-set -gx LC_ALL C.UTF-8
-set -gx SHELL /usr/bin/fish

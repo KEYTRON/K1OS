@@ -7,7 +7,7 @@ set -e
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 ROOTFS_DIR="${ROOT_DIR}/rootfs"
 ISO_DIR="${ROOT_DIR}/iso"
-KERNEL_SRC="${ROOT_DIR}/kernel/linux-6.17.9"
+KERNEL_SRC="${ROOT_DIR}/kernel/linux-6.19.10"
 OUTPUT="${ROOT_DIR}/k1os.iso"
 INITRAMFS_TMP="${ROOT_DIR}/build/initramfs_tmp"
 

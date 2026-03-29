@@ -1,0 +1,94 @@
+#!/bin/sh
+# K1OS initramfs /init — stage 1: монтируем overlayfs → switch_root
+# После switch_root управление передаётся /sbin/init (runit) в реальном rootfs
+
+# --- виртуальные ФС ---
+mount -t proc     none /proc
+mount -t sysfs    none /sys
+mount -t devtmpfs none /dev 2>/dev/null || mdev -s
+mkdir -p /dev/pts
+mount -t devpts   none /dev/pts
+
+# --- параметры ядра ---
+PERSIST_DEV=""
+PERSIST_LABEL="K1OS-DATA"
+for param in $(cat /proc/cmdline); do
+    case "$param" in
+        persist=*) PERSIST_DEV="${param#persist=}" ;;
+        nopersist)  PERSIST_DEV="none" ;;
+    esac
+done
+
+NEWROOT="/newroot"
+SQUASH="/run/squashfs"
+UPPER="/run/overlay/upper"
+WORK="/run/overlay/work"
+
+mount -t tmpfs -o size=10% none /run
+mkdir -p "$NEWROOT" "$SQUASH" "$UPPER" "$WORK"
+
+# --- монтируем squashfs ---
+# Ищем squashfs на смонтированных устройствах
+find_squash() {
+    mkdir -p /run/media
+    # Пробуем найти устройство с label K1OS или файлом system.squashfs
+    for dev in /dev/sr0 /dev/sda /dev/sda1 /dev/vda /dev/vda1; do
+        [ -b "$dev" ] || continue
+        mount -o ro "$dev" /run/media 2>/dev/null || continue
+        if [ -f "/run/media/system.squashfs" ]; then
+            echo "$dev"
+            return 0
+        fi
+        umount /run/media 2>/dev/null
+    done
+    return 1
+}
+
+BOOT_DEV=$(find_squash) || true
+
+if [ -n "$BOOT_DEV" ] && [ -f "/run/media/system.squashfs" ]; then
+    mount -t squashfs -o ro,loop /run/media/system.squashfs "$SQUASH"
+else
+    # Fallback: initramfs сам и есть rootfs (старый режим)
+    echo "[k1os] WARNING: system.squashfs not found, booting from initramfs directly"
+    exec /bin/sh
+fi
+
+# --- upper layer: persist или tmpfs ---
+USE_PERSIST=0
+if [ "$PERSIST_DEV" != "none" ]; then
+    # Ищем раздел по label K1OS-DATA если не задан явно
+    if [ -z "$PERSIST_DEV" ]; then
+        PERSIST_DEV=$(findfs LABEL="$PERSIST_LABEL" 2>/dev/null || true)
+    fi
+    if [ -n "$PERSIST_DEV" ] && [ -b "$PERSIST_DEV" ]; then
+        mkdir -p /run/persist
+        if mount -t ext4 "$PERSIST_DEV" /run/persist 2>/dev/null; then
+            mkdir -p /run/persist/upper /run/persist/work
+            UPPER="/run/persist/upper"
+            WORK="/run/persist/work"
+            USE_PERSIST=1
+            echo "[k1os] Persistent storage: $PERSIST_DEV"
+        fi
+    fi
+fi
+
+if [ "$USE_PERSIST" = "0" ]; then
+    echo "[k1os] RAM mode (changes lost on reboot)"
+    mount -t tmpfs -o size=75% none /run/overlay
+    mkdir -p "$UPPER" "$WORK"
+fi
+
+# --- overlayfs ---
+mount -t overlay overlay \
+    -o "lowerdir=$SQUASH,upperdir=$UPPER,workdir=$WORK" \
+    "$NEWROOT"
+
+# --- bind-mount виртуальные ФС в новый корень ---
+mkdir -p "$NEWROOT/proc" "$NEWROOT/sys" "$NEWROOT/dev" "$NEWROOT/run"
+mount --bind /proc "$NEWROOT/proc"
+mount --bind /sys  "$NEWROOT/sys"
+mount --bind /dev  "$NEWROOT/dev"
+
+# --- switch_root ---
+exec switch_root "$NEWROOT" /sbin/init

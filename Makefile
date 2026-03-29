@@ -1,6 +1,6 @@
 .PHONY: all clean help kernel rootfs iso packages busybox runit fish curl git dropbear modules warp
 
-KERNEL_DIR  := $(CURDIR)/kernel/linux-6.17.9
+KERNEL_DIR  := $(CURDIR)/kernel/linux-6.19.10
 CUSTOM_DIR  := $(CURDIR)/custom
 BUILD_DIR   := $(CURDIR)/build
 SCRIPTS_DIR := $(CURDIR)/scripts
