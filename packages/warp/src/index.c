@@ -62,6 +62,8 @@ static int index_parse(const char *json_src, warp_index_t *idx) {
     strncpy(idx->signature,  sig ? sig : "", sizeof(idx->signature)-1);
     const char *ts = json_str(root, "timestamp", "");
     strncpy(idx->timestamp, ts, sizeof(idx->timestamp)-1);
+    const char *plurl = json_str(root, "peer_list_url", "");
+    strncpy(idx->peer_list_url, plurl, WARP_MAX_URL-1);
 
     json_t *pkgs = json_get(root, "packages");
     if (!pkgs || pkgs->type != JSON_OBJECT) {
