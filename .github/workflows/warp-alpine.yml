@@ -1,0 +1,38 @@
+name: Warp Alpine
+
+on:
+  push:
+    paths:
+      - "packages/warp/**"
+      - ".github/workflows/warp-alpine.yml"
+      - "README.md"
+      - "README.ru.md"
+  pull_request:
+    paths:
+      - "packages/warp/**"
+      - ".github/workflows/warp-alpine.yml"
+      - "README.md"
+      - "README.ru.md"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build image
+        run: docker build -f packages/warp/docker/Dockerfile.alpine -t warp:alpine packages/warp
+
+      - name: Smoke test version
+        run: docker run --rm warp:alpine --version
+
+      - name: Smoke test help
+        run: docker run --rm warp:alpine --help >/dev/null

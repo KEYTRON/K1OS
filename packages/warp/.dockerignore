@@ -1,0 +1,4 @@
+.git
+warp
+src/*.o
+docker/*.log

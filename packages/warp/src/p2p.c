@@ -176,8 +176,16 @@ static int parse_peer_json(const char *json_src, warp_peer_list_t *out) {
 
     for (int i = 0; i < arr->v.arr.count && out->count < WARP_PEERS_MAX; i++) {
         json_t *item = arr->v.arr.items[i];
-        if (!item || item->type != JSON_STRING) continue;
-        strncpy(out->peers[out->count].url, item->v.s, WARP_PEER_URL_MAX - 1);
+        const char *url = NULL;
+        if (item) {
+            if (item->type == JSON_STRING) {
+                url = item->v.s;
+            } else if (item->type == JSON_OBJECT) {
+                url = json_str(item, "url", NULL);
+            }
+        }
+        if (!url || !url[0]) continue;
+        strncpy(out->peers[out->count].url, url, WARP_PEER_URL_MAX - 1);
         out->count++;
     }
 
@@ -188,9 +196,9 @@ static int parse_peer_json(const char *json_src, warp_peer_list_t *out) {
 int p2p_load_peers(warp_peer_list_t *out, const char *list_url) {
     memset(out, 0, sizeof(*out));
 
-    /* Fall back to compiled-in tracker if index doesn't specify one */
+    /* Fall back to compiled-in tracker dashboard if index doesn't specify one */
     if (!list_url || !list_url[0])
-        list_url = WARP_TRACKER_URL "/peers";
+        list_url = WARP_TRACKER_URL "/dashboard";
 
     if (!list_url[0]) return WARP_ERR_NET;
 
@@ -740,16 +748,32 @@ static void seed_handle_request(int fd) {
  *  Volunteer: download low-seeder packages into volunteer cache
  * ══════════════════════════════════════════════════════════════ */
 
-/* Popularity: {pkg_name: seeder_count} from tracker.
-   Returns parsed JSON object or NULL (caller frees with json_free). */
-static json_t *fetch_popularity(void) {
+/* Dashboard summary from tracker:
+   { active_peers, total_peers, packages_cached, packages, peers, updated } */
+static json_t *fetch_dashboard(void) {
     char url[WARP_MAX_URL];
-    snprintf(url, sizeof(url), "%s/popularity", WARP_TRACKER_URL);
+    snprintf(url, sizeof(url), "%s/dashboard", WARP_TRACKER_URL);
     char *body = warp_download_str(url);
     if (!body) return NULL;
     json_t *j = json_parse(body);
     free(body);
     return j;
+}
+
+static int dashboard_package_seeders(json_t *dashboard, const char *name) {
+    if (!dashboard || !name || !name[0]) return 0;
+
+    json_t *pkgs = json_get(dashboard, "packages");
+    if (!pkgs || pkgs->type != JSON_ARRAY) return 0;
+
+    for (int i = 0; i < pkgs->v.arr.count; i++) {
+        json_t *pkg = pkgs->v.arr.items[i];
+        if (!pkg || pkg->type != JSON_OBJECT) continue;
+        if (strcmp(json_str(pkg, "name", ""), name) == 0)
+            return (int)json_num(pkg, "seeders", 0);
+    }
+
+    return 0;
 }
 
 int p2p_volunteer(warp_seed_config_t *cfg, int port) {
@@ -764,8 +788,8 @@ int p2p_volunteer(warp_seed_config_t *cfg, int port) {
 
     /* Fetch popularity (best-effort; NULL = proceed without it) */
     warp_info("Fetching package popularity from tracker...");
-    json_t *pop = fetch_popularity();
-    if (!pop)
+    json_t *dash = fetch_dashboard();
+    if (!dash)
         warp_warn("Tracker unreachable — ignoring popularity, using index order");
 
     size_t used  = volunteer_used_bytes();
@@ -778,7 +802,7 @@ int p2p_volunteer(warp_seed_config_t *cfg, int port) {
 
     if (avail == 0) {
         warp_warn("Volunteer cache is full — nothing to download");
-        if (pop) json_free(pop);
+        if (dash) json_free(dash);
         index_free(&idx);
         return WARP_OK;
     }
@@ -798,11 +822,8 @@ int p2p_volunteer(warp_seed_config_t *cfg, int port) {
 
         /* Check seeder count — only help packages with < 5 seeders */
         int seeders = 0;
-        if (pop) {
-            json_t *cnt = json_get(pop, e->name);
-            if (cnt && cnt->type == JSON_NUMBER)
-                seeders = (int)cnt->v.n;
-        }
+        if (dash)
+            seeders = dashboard_package_seeders(dash, e->name);
         if (seeders >= 5) continue;   /* well-seeded, no need */
 
         char pkg_sz[32];
@@ -842,7 +863,7 @@ int p2p_volunteer(warp_seed_config_t *cfg, int port) {
         if (avail == 0) break;   /* quota full */
     }
 
-    if (pop) json_free(pop);
+    if (dash) json_free(dash);
     index_free(&idx);
 
     fmt_size(volunteer_used_bytes(), sz_used, sizeof(sz_used));

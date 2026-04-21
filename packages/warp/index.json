@@ -1,7 +1,7 @@
 {
   "timestamp": "2026-04-21",
   "signature": "",
-  "peer_list_url": "https://keytron-prime.org/warp/peers",
+  "peer_list_url": "https://keytron-prime.org/warp/dashboard",
   "packages": {
     "nano": {
       "version": "7.2",

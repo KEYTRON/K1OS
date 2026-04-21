@@ -150,11 +150,13 @@ int cmd_install(int argc, char **argv) {
     if (idx.peer_list_url[0] || WARP_TRACKER_URL[0]) {
         const char *tracker = idx.peer_list_url[0]
                               ? idx.peer_list_url : WARP_TRACKER_URL;
-        /* tracker url ends without /announce — strip /peers suffix if present */
+        /* Tracker announce base should not include dashboard or peer-list paths. */
         char announce_url[WARP_MAX_URL];
         snprintf(announce_url, sizeof(announce_url), "%s", tracker);
-        /* Remove trailing /peers if present */
-        char *tail = strstr(announce_url, "/peers");
+        /* Remove trailing tracker UI/API suffixes if present */
+        char *tail = strstr(announce_url, "/dashboard");
+        if (tail) *tail = '\0';
+        tail = strstr(announce_url, "/peers");
         if (tail) *tail = '\0';
 
         if (p2p_announce(announce_url, entry.name, entry.sha256, WARP_PEER_PORT) == WARP_OK)

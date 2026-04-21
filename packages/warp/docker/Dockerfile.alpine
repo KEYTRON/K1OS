@@ -1,0 +1,25 @@
+FROM alpine:3.20 AS build
+
+RUN apk add --no-cache \
+    build-base \
+    ca-certificates \
+    curl-dev \
+    openssl-dev \
+    pkgconf
+
+WORKDIR /src
+COPY . .
+RUN make -j"$(getconf _NPROCESSORS_ONLN)"
+
+FROM alpine:3.20
+
+RUN apk add --no-cache \
+    ca-certificates \
+    curl \
+    openssl
+
+WORKDIR /workspace
+COPY --from=build /src/warp /usr/local/bin/warp
+
+ENTRYPOINT ["/usr/local/bin/warp"]
+CMD ["--help"]

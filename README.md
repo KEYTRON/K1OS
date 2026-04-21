@@ -2,6 +2,10 @@
 
 Language: English (default) | [Русская версия](README.ru.md)
 
+[![Warp Alpine](https://github.com/KEYTRON/K1OS/actions/workflows/warp-alpine.yml/badge.svg)](https://github.com/KEYTRON/K1OS/actions/workflows/warp-alpine.yml)
+[![Warp Debian](https://github.com/KEYTRON/K1OS/actions/workflows/warp-debian.yml/badge.svg)](https://github.com/KEYTRON/K1OS/actions/workflows/warp-debian.yml)
+[![Warp Fedora](https://github.com/KEYTRON/K1OS/actions/workflows/warp-fedora.yml/badge.svg)](https://github.com/KEYTRON/K1OS/actions/workflows/warp-fedora.yml)
+
 ## Overview
 
 K1OS is a Linux-based operating system focused on development.
@@ -12,7 +16,7 @@ K1OS is not "just another distro clone". It is a standalone operating system bui
 
 ## Core Components
 
-- Linux kernel (`kernel/linux-6.17.9`) as the base system layer.
+- Linux kernel (`kernel/linux-7.0`) as the base system layer.
 - Minimal `initramfs` (stage 1) to initialize early boot and prepare the real root.
 - `system.squashfs` as the read-only base rootfs.
 - `overlayfs` over squashfs with either:
