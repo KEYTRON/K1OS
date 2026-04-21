@@ -2,9 +2,18 @@
 
 Language: English (default) | [Русская версия](README.ru.md)
 
-[![Warp Alpine](https://github.com/KEYTRON/K1OS/actions/workflows/warp-alpine.yml/badge.svg)](https://github.com/KEYTRON/K1OS/actions/workflows/warp-alpine.yml)
-[![Warp Debian](https://github.com/KEYTRON/K1OS/actions/workflows/warp-debian.yml/badge.svg)](https://github.com/KEYTRON/K1OS/actions/workflows/warp-debian.yml)
-[![Warp Fedora](https://github.com/KEYTRON/K1OS/actions/workflows/warp-fedora.yml/badge.svg)](https://github.com/KEYTRON/K1OS/actions/workflows/warp-fedora.yml)
+WARP is now developed in the standalone [KEYTRON/WARP](https://github.com/KEYTRON/WARP) repository.
+K1OS pulls WARP from that repo during `make warp`.
+If you keep both repos side by side, `packages/warp/build.sh` will use the sibling `../WARP` checkout.
+You can override that with `WARP_SOURCE_DIR=/path/to/WARP`.
+
+K1OS also publishes a container image to GHCR as `ghcr.io/keytron/k1os`.
+
+[![K1OS Container](https://github.com/KEYTRON/K1OS/actions/workflows/k1os-image.yml/badge.svg)](https://github.com/KEYTRON/K1OS/actions/workflows/k1os-image.yml)
+
+Current K1OS-side integration source:
+- [`packages/warp/build.sh`](packages/warp/build.sh)
+- [`Dockerfile`](Dockerfile)
 
 ## Overview
 
@@ -24,7 +33,7 @@ K1OS is not "just another distro clone". It is a standalone operating system bui
   - `ext4` partition labeled `K1OS-DATA` (persistent mode).
 - `runit` as stage 2 init (`/sbin/init` inside rootfs).
 - Built userland: `busybox`, `fish`, `curl`, `git`, `dropbear`, `tmux`, `nano`, `python3`, `htop`.
-- `warp` (K1OS package manager in C) for package install and management.
+- `warp` (package manager in C, sourced from the standalone KEYTRON/WARP repo) for package install and management.
 
 ## Boot Architecture
 

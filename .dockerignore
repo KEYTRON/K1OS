@@ -1,0 +1,14 @@
+.git
+build
+iso
+kernel
+packages/*/build
+packages/*/*.tar.*
+packages/*/*.tgz
+packages/*/*.zip
+packages/*/*.tar.xz
+packages/*/*.tar.gz
+packages/*/*.tar.bz2
+*.iso
+*.qcow2
+persist.qcow2

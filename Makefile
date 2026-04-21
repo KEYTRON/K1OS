@@ -1,4 +1,4 @@
-.PHONY: all clean help kernel rootfs iso packages busybox runit fish curl git dropbear modules warp
+.PHONY: all clean help kernel rootfs iso image packages busybox runit fish curl git dropbear modules warp
 
 export CFLAGS := -O2 -pipe -march=x86-64 -mtune=generic
 export CXXFLAGS := $(CFLAGS)
@@ -29,6 +29,7 @@ help:
 	@echo "  make rootfs     - Build rootfs (BusyBox + runit + fish)"
 	@echo "  make iso        - Build bootable ISO image"
 	@echo "  make all-build  - Full build: kernel + rootfs + iso"
+	@echo "  make image      - Build K1OS container image"
 	@echo ""
 	@echo "Package targets:"
 	@echo "  make busybox    - Build BusyBox userland"
@@ -36,7 +37,7 @@ help:
 	@echo "  make fish       - Build fish shell"
 	@echo "  make tmux       - Build tmux terminal multiplexer"
 	@echo "  make nano       - Build nano text editor"
-	@echo "  make warp       - Build warp package manager"
+	@echo "  make warp       - Build warp package manager from KEYTRON/WARP"
 	@echo ""
 	@echo "Custom code:"
 	@echo "  make modules    - Build custom kernel modules"
@@ -103,6 +104,10 @@ htop:
 
 warp:
 	@bash $(CURDIR)/packages/warp/build.sh all
+
+# Container image
+image: rootfs
+	@docker build -t k1os:local -f $(CURDIR)/Dockerfile $(CURDIR)
 
 # ISO image
 iso:
