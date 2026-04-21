@@ -34,6 +34,8 @@ fetch() {
 build() {
     log_info "Configuring BusyBox (static build)..."
     make -C "${BUILD_DIR}" defconfig
+    # Force x86-64 baseline (no AVX/SSE4) for QEMU compatibility
+    sed -i 's/CONFIG_EXTRA_CFLAGS=""/CONFIG_EXTRA_CFLAGS="-march=x86-64 -mtune=generic -mno-avx -mno-avx2 -mno-avx512f -mno-sse4.2 -mno-sse4.1 -mno-vzeroupper -masm=intel"/' "${BUILD_DIR}/.config"
     # Enable static linking (no external libc dependency)
     sed -i 's/# CONFIG_STATIC is not set/CONFIG_STATIC=y/' "${BUILD_DIR}/.config"
     sed -i 's/CONFIG_STATIC=n/CONFIG_STATIC=y/' "${BUILD_DIR}/.config"
@@ -41,7 +43,7 @@ build() {
     sed -i 's/CONFIG_TC=y/# CONFIG_TC is not set/' "${BUILD_DIR}/.config"
 
     log_info "Building BusyBox..."
-    make -C "${BUILD_DIR}" -j$(nproc)
+    make -C "${BUILD_DIR}" -j"$(nproc)"
 }
 
 pkg_install() {

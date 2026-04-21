@@ -63,7 +63,7 @@ build() {
         --silent
 
     log_info "Building curl..."
-    make -j$(nproc) --silent
+    make -j"$(nproc)" --silent
 }
 
 pkg_install() {
@@ -83,7 +83,7 @@ pkg_install() {
         log_info "CA certificates copied"
     fi
 
-    log_info "curl installed: $(${ROOTFS_DIR}/usr/bin/curl --version 2>/dev/null | head -1 || echo 'OK')"
+    log_info "curl installed: $("${ROOTFS_DIR}"/usr/bin/curl --version 2>/dev/null | head -1 || echo 'OK')"
 }
 
 case "${1:-all}" in

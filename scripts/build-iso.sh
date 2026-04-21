@@ -7,7 +7,7 @@ set -e
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 ROOTFS_DIR="${ROOT_DIR}/rootfs"
 ISO_DIR="${ROOT_DIR}/iso"
-KERNEL_SRC="${ROOT_DIR}/kernel/linux-6.19.10"
+KERNEL_SRC="${ROOT_DIR}/kernel/linux-7.0"
 OUTPUT="${ROOT_DIR}/k1os.iso"
 INITRAMFS_TMP="${ROOT_DIR}/build/initramfs_tmp"
 
@@ -80,7 +80,7 @@ build_initramfs() {
     # Собираем cpio + gzip
     (cd "${INITRAMFS_TMP}" && find . | cpio -oH newc 2>/dev/null | gzip -9) \
         > "${ISO_DIR}/boot/initramfs.gz"
-    log_info "initramfs size: $(du -sh ${ISO_DIR}/boot/initramfs.gz | cut -f1)"
+    log_info "initramfs size: $(du -sh "${ISO_DIR}"/boot/initramfs.gz | cut -f1)"
 }
 
 # Полный rootfs упаковываем в squashfs
@@ -93,7 +93,7 @@ build_squashfs() {
         -no-xattrs \
         -e "${ROOTFS_DIR}/init" \
         2>/dev/null
-    log_info "squashfs size: $(du -sh ${ISO_DIR}/system.squashfs | cut -f1)"
+    log_info "squashfs size: $(du -sh "${ISO_DIR}"/system.squashfs | cut -f1)"
 }
 
 setup_iso_tree() {
@@ -127,7 +127,7 @@ build_iso() {
     log_info "Building ISO image..."
     "${GRUB_MKRESCUE}" -o "${OUTPUT}" "${ISO_DIR}" -- -volid K1OS 2>/dev/null
     log_info "ISO created: ${OUTPUT}"
-    log_info "Size: $(du -sh ${OUTPUT} | cut -f1)"
+    log_info "Size: $(du -sh "${OUTPUT}" | cut -f1)"
 }
 
 print_test_cmd() {

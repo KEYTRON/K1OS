@@ -62,7 +62,7 @@ build() {
         --silent
 
     log_info "Building tmux..."
-    make -j$(nproc) --silent
+    make -j"$(nproc)" --silent
 }
 
 pkg_install() {
@@ -96,7 +96,7 @@ set -g status-left "#[fg=green][K1OS] "
 set -g status-right "#[fg=yellow]%H:%M"
 EOF
 
-    log_info "tmux installed: $(${ROOTFS_DIR}/usr/bin/tmux -V 2>/dev/null || echo 'OK')"
+    log_info "tmux installed: $("${ROOTFS_DIR}"/usr/bin/tmux -V 2>/dev/null || echo 'OK')"
 }
 
 case "${1:-all}" in

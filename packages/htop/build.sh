@@ -46,7 +46,7 @@ build() {
         --silent
 
     log_info "Building htop..."
-    make -j$(nproc) --silent
+    make -j"$(nproc)" --silent
 }
 
 pkg_install() {
@@ -58,7 +58,7 @@ pkg_install() {
         [ -f "$lib" ] && cp -n "$lib" "${ROOTFS_DIR}/lib64/" 2>/dev/null || true
     done
 
-    log_info "htop installed: $(${ROOTFS_DIR}/usr/bin/htop --version 2>/dev/null | head -1 || echo 'OK')"
+    log_info "htop installed: $("${ROOTFS_DIR}"/usr/bin/htop --version 2>/dev/null | head -1 || echo 'OK')"
 }
 
 case "${1:-all}" in

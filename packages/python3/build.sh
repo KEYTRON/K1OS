@@ -51,7 +51,7 @@ build() {
         --silent
 
     log_info "Building Python (this takes a while)..."
-    make -j$(nproc) --silent
+    make -j"$(nproc)" --silent
 }
 
 pkg_install() {
@@ -64,7 +64,12 @@ pkg_install() {
 
     # Python устанавливает stdlib в lib/, но ищет в lib64/ (Fedora-специфично)
     # Копируем stdlib в lib64/python3.13/
-    PY_VER=$(ls "${ROOTFS_DIR}/usr/lib/" | grep "python3" | head -1)
+    PY_VER=""
+    for dir in "${ROOTFS_DIR}"/usr/lib/python3*; do
+        [ -d "$dir" ] || continue
+        PY_VER="$(basename "$dir")"
+        break
+    done
     if [ -n "${PY_VER}" ] && [ -d "${ROOTFS_DIR}/usr/lib/${PY_VER}" ]; then
         mkdir -p "${ROOTFS_DIR}/usr/lib64/${PY_VER}"
         cp -rn "${ROOTFS_DIR}/usr/lib/${PY_VER}/." "${ROOTFS_DIR}/usr/lib64/${PY_VER}/"
@@ -76,11 +81,11 @@ pkg_install() {
         [ -f "$lib" ] && cp -n "$lib" "${ROOTFS_DIR}/lib64/" 2>/dev/null || true
     done
     # libpython shared lib
-    find "${ROOTFS_DIR}/usr/lib" -name "libpython3*.so*" 2>/dev/null | while read lib; do
+    find "${ROOTFS_DIR}/usr/lib" -name "libpython3*.so*" 2>/dev/null | while read -r lib; do
         cp -n "$lib" "${ROOTFS_DIR}/lib64/" 2>/dev/null || true
     done
 
-    log_info "Python installed: $(${ROOTFS_DIR}/usr/bin/python3 --version 2>/dev/null || echo 'OK')"
+    log_info "Python installed: $("${ROOTFS_DIR}"/usr/bin/python3 --version 2>/dev/null || echo 'OK')"
 }
 
 case "${1:-all}" in

@@ -175,9 +175,9 @@ copy_libs() {
     mkdir -p "${ROOTFS_DIR}/lib64"
 
     # Собираем все .so зависимости всех бинарников
-    for bin in "${ROOTFS_DIR}/usr/bin/"* "${ROOTFS_DIR}/usr/sbin/"*; do
+    for bin in "${ROOTFS_DIR}/usr/bin/"* "${ROOTFS_DIR}/usr/sbin/"* "${ROOTFS_DIR}/sbin/"*; do
         [ -f "$bin" ] || continue
-        ldd "$bin" 2>/dev/null | grep "=>" | awk '{print $3}' | grep -v '^$' | while read lib; do
+        ldd "$bin" 2>/dev/null | grep "=>" | awk '{print $3}' | grep -v '^$' | while read -r lib; do
             [ -f "$lib" ] && cp -n "$lib" "${ROOTFS_DIR}/lib64/" 2>/dev/null || true
         done
     done

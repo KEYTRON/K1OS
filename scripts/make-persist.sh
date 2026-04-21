@@ -58,7 +58,7 @@ setup_qcow2() {
     # Конвертируем в raw для форматирования
     local raw_tmp
     raw_tmp="$(mktemp /tmp/k1os-persist-XXXXXX.raw)"
-    trap "rm -f '$raw_tmp'" EXIT
+    trap 'rm -f "$raw_tmp"' EXIT
 
     log_info "Конвертируем в raw для форматирования..."
     qemu-img convert -f qcow2 -O raw "$img" "$raw_tmp"

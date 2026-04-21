@@ -56,7 +56,7 @@ build() {
         --silent
 
     log_info "Building git (this takes a while)..."
-    make -j$(nproc) \
+    make -j"$(nproc)" \
         NO_TCLTK=1 \
         NO_GETTEXT=1 \
         NO_INSTALL_HARDLINKS=1 \
@@ -103,7 +103,7 @@ pkg_install() {
     rebase = false
 EOF
 
-    log_info "git installed: $(${ROOTFS_DIR}/usr/bin/git --version 2>/dev/null || echo 'OK')"
+    log_info "git installed: $("${ROOTFS_DIR}"/usr/bin/git --version 2>/dev/null || echo 'OK')"
 }
 
 case "${1:-all}" in

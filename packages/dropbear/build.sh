@@ -37,7 +37,7 @@ build() {
         --silent
 
     log_info "Building dropbear..."
-    make -j$(nproc) PROGRAMS="dropbear dbclient dropbearkey scp" --silent
+    make -j"$(nproc)" PROGRAMS="dropbear dbclient dropbearkey scp" --silent
 }
 
 pkg_install() {

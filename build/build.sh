@@ -8,7 +8,7 @@ set -e
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 BUILD_DIR="${SCRIPT_DIR}/build"
 KERNEL_DIR="${SCRIPT_DIR}/kernel"
-KERNEL_SRC="${KERNEL_DIR}/linux-6.17.9"
+KERNEL_SRC="${KERNEL_DIR}/linux-7.0"
 CUSTOM_DIR="${SCRIPT_DIR}/custom"
 
 # Color output
@@ -61,7 +61,7 @@ build_kernel() {
         make -C "${KERNEL_SRC}" olddefconfig
     fi
 
-    make -C "${KERNEL_SRC}" -j$(nproc)
+    make -C "${KERNEL_SRC}" -j"$(nproc)"
 
     log_info "Kernel build completed"
 }
@@ -112,34 +112,33 @@ usage() {
 }
 
 # Parse arguments
-while [[ $# -gt 0 ]]; do
-    case $1 in
-        --help)
-            usage
-            exit 0
-            ;;
-        --check-only)
-            check_prerequisites
-            exit 0
-            ;;
-        --kernel-only)
-            check_prerequisites
-            build_kernel
-            exit 0
-            ;;
-        --custom-only)
-            check_prerequisites
-            build_custom
-            exit 0
-            ;;
-        *)
-            log_error "Unknown option: $1"
-            usage
-            exit 1
-            ;;
-    esac
-    shift
-done
+case "${1:-}" in
+    --help)
+        usage
+        exit 0
+        ;;
+    --check-only)
+        check_prerequisites
+        exit 0
+        ;;
+    --kernel-only)
+        check_prerequisites
+        build_kernel
+        exit 0
+        ;;
+    --custom-only)
+        check_prerequisites
+        build_custom
+        exit 0
+        ;;
+    "")
+        ;;
+    *)
+        log_error "Unknown option: $1"
+        usage
+        exit 1
+        ;;
+esac
 
 # Run main build
 main

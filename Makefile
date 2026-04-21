@@ -1,6 +1,11 @@
 .PHONY: all clean help kernel rootfs iso packages busybox runit fish curl git dropbear modules warp
 
-KERNEL_DIR  := $(CURDIR)/kernel/linux-6.19.10
+export CFLAGS := -O2 -pipe -march=x86-64 -mtune=generic
+export CXXFLAGS := $(CFLAGS)
+export CPPFLAGS :=
+export LDFLAGS :=
+
+KERNEL_DIR  := $(CURDIR)/kernel/linux-7.0
 CUSTOM_DIR  := $(CURDIR)/custom
 BUILD_DIR   := $(CURDIR)/build
 SCRIPTS_DIR := $(CURDIR)/scripts
@@ -119,14 +124,14 @@ qemu:
 		echo "ERROR: k1os.iso not found. Run: make iso"; \
 		exit 1; \
 	fi
-	qemu-system-x86_64 -m 512M -cdrom $(CURDIR)/k1os.iso -vga virtio -enable-kvm
+	qemu-system-x86_64 -m 512M -cdrom $(CURDIR)/k1os.iso -vga virtio -enable-kvm -cpu host,+avx,+avx2
 
 qemu-nographic:
 	@if [ ! -f "$(CURDIR)/k1os.iso" ]; then \
 		echo "ERROR: k1os.iso not found. Run: make iso"; \
 		exit 1; \
 	fi
-	qemu-system-x86_64 -m 512M -cdrom $(CURDIR)/k1os.iso -nographic
+	qemu-system-x86_64 -m 512M -cdrom $(CURDIR)/k1os.iso -nographic -enable-kvm -cpu host,+avx,+avx2
 
 # Persistent storage: создать qcow2 + запустить QEMU с ним
 make-persist:
@@ -141,7 +146,7 @@ qemu-persist:
 		echo "No persist.qcow2 found. Run: make make-persist"; \
 		exit 1; \
 	fi
-	qemu-system-x86_64 -m 512M -cdrom $(CURDIR)/k1os.iso -hda $(CURDIR)/persist.qcow2 -vga virtio -enable-kvm
+	qemu-system-x86_64 -m 512M -cdrom $(CURDIR)/k1os.iso -hda $(CURDIR)/persist.qcow2 -vga virtio -enable-kvm -cpu host,+avx,+avx2
 
 # Clean
 clean:

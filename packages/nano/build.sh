@@ -48,7 +48,7 @@ build() {
         --silent
 
     log_info "Building nano..."
-    make -j$(nproc) --silent
+    make -j"$(nproc)" --silent
 }
 
 pkg_install() {
@@ -78,7 +78,7 @@ EOF
     # Симлинк: edit -> nano (удобный алиас)
     ln -sf nano "${ROOTFS_DIR}/usr/bin/edit" 2>/dev/null || true
 
-    log_info "nano installed: $(${ROOTFS_DIR}/usr/bin/nano --version 2>/dev/null | head -1 || echo 'OK')"
+    log_info "nano installed: $("${ROOTFS_DIR}"/usr/bin/nano --version 2>/dev/null | head -1 || echo 'OK')"
 }
 
 case "${1:-all}" in

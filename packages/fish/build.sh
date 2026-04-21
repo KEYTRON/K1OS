@@ -53,7 +53,7 @@ build() {
           -DCMAKE_INSTALL_SYSCONFDIR=/etc
 
     log_info "Building fish..."
-    ninja -C "${BUILD_DIR}/cmake-build" -j$(nproc)
+    ninja -C "${BUILD_DIR}/cmake-build" -j"$(nproc)"
 }
 
 pkg_install() {
