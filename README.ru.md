@@ -8,6 +8,7 @@ K1OS подтягивает WARP из этого репозитория во в�
 Путь можно переопределить через `WARP_SOURCE_DIR=/path/to/WARP`.
 
 K1OS также публикует container image в GHCR как `ghcr.io/keytron/k1os`.
+Workflow для контейнера smoke-test'ит сам образ и встроенный `warp`.
 
 [![K1OS Container](https://github.com/KEYTRON/K1OS/actions/workflows/k1os-image.yml/badge.svg)](https://github.com/KEYTRON/K1OS/actions/workflows/k1os-image.yml)
 

@@ -43,7 +43,7 @@ jobs:
         run: make image
 
       - name: Smoke test image
-        run: docker run --rm k1os:local /bin/sh -lc 'grep -q "^NAME=\"K1OS\"" /etc/os-release && /usr/bin/fish --version >/dev/null'
+        run: docker run --rm k1os:local /bin/sh -lc 'grep -q "^NAME=\"K1OS\"" /etc/os-release && /usr/bin/fish --version >/dev/null && warp --version >/dev/null && warp --help >/dev/null'
 
       - name: Log in to GHCR
         if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'

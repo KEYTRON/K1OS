@@ -8,6 +8,7 @@ If you keep both repos side by side, `packages/warp/build.sh` will use the sibli
 You can override that with `WARP_SOURCE_DIR=/path/to/WARP`.
 
 K1OS also publishes a container image to GHCR as `ghcr.io/keytron/k1os`.
+The container workflow smoke-tests both the base image and the bundled `warp` package manager.
 
 [![K1OS Container](https://github.com/KEYTRON/K1OS/actions/workflows/k1os-image.yml/badge.svg)](https://github.com/KEYTRON/K1OS/actions/workflows/k1os-image.yml)
 
