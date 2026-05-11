@@ -23,8 +23,10 @@ Linux kernel layer:
 K1OS layer:
 - boot architecture (`initramfs -> squashfs -> overlayfs -> switch_root`);
 - rootfs and userland composition;
-- package management via `warp`;
+- package management via `warp` fetched from the standalone `KEYTRON/WARP` repo during `make warp`;
 - ISO build and delivery pipeline.
+
+If `K1OS` and `WARP` are checked out side by side, `packages/warp/build.sh` will use the sibling `../WARP` repo first. Set `WARP_SOURCE_DIR` to override that path.
 
 ## Current Integration Flow
 
@@ -43,7 +45,7 @@ K1OS layer:
 ### 3. User Space and Packages
 - User space components are built through `packages/*/build.sh`.
 - Base utilities are assembled into `rootfs/`.
-- `warp` is used as the native K1OS package manager.
+- `warp` is used as the native K1OS package manager and is built from the standalone `KEYTRON/WARP` repository.
 
 ### 4. Validation
 - Validate ISO boot in both RAM and persistent modes.

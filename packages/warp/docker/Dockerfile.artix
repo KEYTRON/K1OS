@@ -1,0 +1,27 @@
+FROM artixlinux/artixlinux:latest AS build
+
+RUN pacman -Sy --noconfirm --needed \
+    base-devel \
+    ca-certificates \
+    curl \
+    openssl \
+    pkgconf \
+    && pacman -Scc --noconfirm
+
+WORKDIR /src
+COPY . .
+RUN make -j"$(nproc)"
+
+FROM artixlinux/artixlinux:latest
+
+RUN pacman -Sy --noconfirm --needed \
+    ca-certificates \
+    curl \
+    openssl \
+    && pacman -Scc --noconfirm
+
+WORKDIR /workspace
+COPY --from=build /src/warp /usr/local/bin/warp
+
+ENTRYPOINT ["/usr/local/bin/warp"]
+CMD ["--help"]

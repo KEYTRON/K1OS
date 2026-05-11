@@ -197,6 +197,9 @@ build_packages() {
 
     log_info "  -> fish shell..."
     bash "${PACKAGES_DIR}/fish/build.sh" all
+
+    log_info "  -> warp..."
+    bash "${PACKAGES_DIR}/warp/build.sh" all
 }
 
 main() {

@@ -1,4 +1,4 @@
-.PHONY: all clean help kernel rootfs iso image packages busybox runit fish curl git dropbear modules warp
+.PHONY: all clean help kernel rootfs iso image packages busybox runit fish curl git dropbear modules warp wayland wlroots k1de
 
 export CFLAGS := -O2 -pipe -march=x86-64 -mtune=generic
 export CXXFLAGS := $(CFLAGS)
@@ -38,6 +38,12 @@ help:
 	@echo "  make tmux       - Build tmux terminal multiplexer"
 	@echo "  make nano       - Build nano text editor"
 	@echo "  make warp       - Build warp package manager from KEYTRON/WARP"
+	@echo ""
+	@echo "Desktop (K1DE):"
+	@echo "  make wayland    - Build wayland + protocols"
+	@echo "  make xkbcommon  - Build libxkbcommon"
+	@echo "  make wlroots    - Build wlroots compositor library"
+	@echo "  make k1de       - Build K1DE compositor"
 	@echo ""
 	@echo "Custom code:"
 	@echo "  make modules    - Build custom kernel modules"
@@ -104,6 +110,20 @@ htop:
 
 warp:
 	@bash $(CURDIR)/packages/warp/build.sh all
+
+# Desktop Environment (K1DE)
+wayland:
+	@bash $(CURDIR)/packages/wayland/build.sh all
+	@bash $(CURDIR)/packages/wl-protocols/build.sh all
+
+xkbcommon:
+	@bash $(CURDIR)/packages/libxkbcommon/build.sh all
+
+wlroots: wayland xkbcommon
+	@bash $(CURDIR)/packages/wlroots/build.sh all
+
+k1de: wlroots
+	@bash $(CURDIR)/packages/k1de/build.sh all
 
 # Container image
 image: rootfs
