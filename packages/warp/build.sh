@@ -69,6 +69,13 @@ build() {
 pkg_install() {
     log_info "Installing warp to rootfs..."
     install -Dm755 "${SOURCE_DIR}/warp" "${ROOTFS_DIR}/usr/bin/warp"
+
+    # Copy shared libraries
+    mkdir -p "${ROOTFS_DIR}/lib64/"
+    for lib in $(ldd "${ROOTFS_DIR}/usr/bin/warp" 2>/dev/null | grep "=>" | awk '{print $3}' | grep -v "^$"); do
+        [ -f "$lib" ] && cp -n "$lib" "${ROOTFS_DIR}/lib64/" 2>/dev/null || true
+    done
+
     log_info "warp installed: /usr/bin/warp"
 }
 
