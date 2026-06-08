@@ -1,0 +1,105 @@
+{
+  "timestamp": "2026-04-21",
+  "signature": "",
+  "peer_list_url": "https://keytron-prime.org/warp/dashboard",
+  "packages": {
+    "nano": {
+      "version": "7.2",
+      "description": "Simple terminal text editor",
+      "sha256": "",
+      "size": 0,
+      "url": "https://github.com/KEYTRON/K1OS/releases/download/packages/nano-7.2-x86_64.warp"
+    },
+    "busybox": {
+      "version": "1.36.1",
+      "description": "Swiss Army Knife of embedded Linux",
+      "sha256": "",
+      "size": 0,
+      "url": "https://github.com/KEYTRON/K1OS/releases/download/packages/busybox-1.36.1-x86_64.warp"
+    },
+    "fish": {
+      "version": "3.7.1",
+      "description": "Friendly interactive shell",
+      "sha256": "",
+      "size": 0,
+      "url": "https://github.com/KEYTRON/K1OS/releases/download/packages/fish-3.7.1-x86_64.warp"
+    },
+    "htop": {
+      "version": "3.3.0",
+      "description": "Interactive process viewer",
+      "sha256": "",
+      "size": 0,
+      "url": "https://github.com/KEYTRON/K1OS/releases/download/packages/htop-3.3.0-x86_64.warp"
+    },
+    "curl": {
+      "version": "8.7.1",
+      "description": "Command-line HTTP client",
+      "sha256": "",
+      "size": 0,
+      "url": "https://github.com/KEYTRON/K1OS/releases/download/packages/curl-8.7.1-x86_64.warp"
+    },
+    "git": {
+      "version": "2.44.0",
+      "description": "Distributed version control system",
+      "sha256": "",
+      "size": 0,
+      "url": "https://github.com/KEYTRON/K1OS/releases/download/packages/git-2.44.0-x86_64.warp"
+    },
+    "tmux": {
+      "version": "3.4",
+      "description": "Terminal multiplexer",
+      "sha256": "",
+      "size": 0,
+      "url": "https://github.com/KEYTRON/K1OS/releases/download/packages/tmux-3.4-x86_64.warp"
+    },
+    "python3": {
+      "version": "3.12.3",
+      "description": "Python 3 interpreter",
+      "sha256": "",
+      "size": 0,
+      "url": "https://github.com/KEYTRON/K1OS/releases/download/packages/python3-3.12.3-x86_64.warp"
+    },
+    "dropbear": {
+      "version": "2022.83",
+      "description": "Lightweight SSH server and client",
+      "sha256": "",
+      "size": 0,
+      "url": "https://github.com/KEYTRON/K1OS/releases/download/packages/dropbear-2022.83-x86_64.warp"
+    },
+    "warp": {
+      "version": "0.3.0",
+      "description": "WARP package manager for K1OS",
+      "sha256": "1d922556b83f23470066858b2ac0301a2fcd709dbfec65fffda6f75bb0d96cbb",
+      "size": 29019,
+      "url": "https://github.com/KEYTRON/K1OS/releases/download/packages-v1/warp-0.3.0-x86_64.warp"
+    },
+    "rust": {
+      "version": "1.80.0",
+      "description": "Rust compiler and Cargo package manager",
+      "sha256": "82053e835c052bd41057663689169b2260c10e8466567fa5dbd77195b66c8c7e",
+      "size": 169656425,
+      "url": "https://github.com/KEYTRON/K1OS/releases/download/packages/rust-1.80.0-x86_64.warp"
+    },
+    "go": {
+      "version": "1.22.3",
+      "description": "Go compiler and toolchain",
+      "sha256": "434b483934afc6a892e4e2b601930cfdb67fa62bd21e5061601ca36beef55026",
+      "size": 69580437,
+      "url": "https://github.com/KEYTRON/K1OS/releases/download/packages/go-1.22.3-x86_64.warp"
+    },
+    "node": {
+      "version": "20.14.0",
+      "description": "Node.js JavaScript runtime",
+      "sha256": "cd44e462716d2a2c85f84f5bb01042e6ed916cfa014610db45dbd99af05a0cb6",
+      "size": 37974339,
+      "url": "https://github.com/KEYTRON/K1OS/releases/download/packages-v1/node-20.14.0-x86_64.warp"
+    },
+    "tailscale": {
+      "version": "1.68.1",
+      "description": "Tailscale zero config VPN",
+      "sha256": "d13e71b7d8dde79c88b92fc53d0fde03244187e857e8db3f5114b77ab5455931",
+      "size": 27174216,
+      "url": "https://github.com/KEYTRON/K1OS/releases/download/packages-v1/tailscale-1.68.1-x86_64.warp"
+    }
+  }
+}
