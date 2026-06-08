@@ -1,4 +1,4 @@
-.PHONY: all clean help kernel rootfs iso image packages busybox runit fish curl git dropbear modules warp wayland wlroots k1de
+.PHONY: all clean help kernel rootfs iso image packages busybox runit fish curl git dropbear modules warp wayland wlroots k1de rust go
 
 export CFLAGS := -O2 -pipe -march=x86-64 -mtune=generic
 export CXXFLAGS := $(CFLAGS)
@@ -38,12 +38,14 @@ help:
 	@echo "  make tmux       - Build tmux terminal multiplexer"
 	@echo "  make nano       - Build nano text editor"
 	@echo "  make warp       - Build warp package manager from KEYTRON/WARP"
+	@echo "  make k1de       - Build K1DE graphics environment (Rust + ASM)"
+	@echo "  make rust       - Build/Install Rust compiler and Cargo"
+	@echo "  make go         - Build/Install Go compiler and tools"
 	@echo ""
-	@echo "Desktop (K1DE):"
+	@echo "Desktop (K1DE libs):"
 	@echo "  make wayland    - Build wayland + protocols"
 	@echo "  make xkbcommon  - Build libxkbcommon"
 	@echo "  make wlroots    - Build wlroots compositor library"
-	@echo "  make k1de       - Build K1DE compositor"
 	@echo ""
 	@echo "Custom code:"
 	@echo "  make modules    - Build custom kernel modules"
@@ -74,7 +76,7 @@ kernel:
 	@echo "[kernel] Build complete: $(KERNEL_DIR)/arch/x86/boot/bzImage"
 
 # Rootfs build (all components)
-rootfs: busybox runit fish curl git dropbear tmux nano python3 htop warp
+rootfs: busybox runit fish curl git dropbear tmux nano python3 htop warp rust go node tailscale
 	@bash $(SCRIPTS_DIR)/build-rootfs.sh
 
 # Individual packages
@@ -122,8 +124,22 @@ xkbcommon:
 wlroots: wayland xkbcommon
 	@bash $(CURDIR)/packages/wlroots/build.sh all
 
-k1de: wlroots
-	@bash $(CURDIR)/packages/k1de/build.sh all
+#k1de:
+#	@bash $(CURDIR)/packages/k1de/build.sh all
+
+rust:
+	@bash $(CURDIR)/packages/rust/build.sh all
+
+go:
+	@bash $(CURDIR)/packages/go/build.sh all
+
+node:
+	@bash $(CURDIR)/packages/node/build.sh all
+
+tailscale:
+	@bash $(CURDIR)/packages/tailscale/build.sh all
+
+
 
 # Container image
 image: rootfs
@@ -180,6 +196,9 @@ clean:
 	@rm -rf $(CURDIR)/packages/busybox/build \
 	        $(CURDIR)/packages/runit/build \
 	        $(CURDIR)/packages/fish/build \
+	        $(CURDIR)/packages/k1de/target \
+	        $(CURDIR)/packages/rust/build \
+	        $(CURDIR)/packages/go/build \
 	        $(CURDIR)/iso \
 	        $(CURDIR)/k1os.iso
 	@echo "[clean] Done"

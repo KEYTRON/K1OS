@@ -72,6 +72,34 @@
       "sha256": "",
       "size": 0,
       "url": "https://github.com/KEYTRON/K1OS/releases/download/packages/warp-0.2.0-x86_64.warp"
+    },
+    "rust": {
+      "version": "1.80.0",
+      "description": "Rust compiler and Cargo package manager",
+      "sha256": "82053e835c052bd41057663689169b2260c10e8466567fa5dbd77195b66c8c7e",
+      "size": 169656425,
+      "url": "https://github.com/KEYTRON/K1OS/releases/download/packages/rust-1.80.0-x86_64.warp"
+    },
+    "go": {
+      "version": "1.22.3",
+      "description": "Go compiler and toolchain",
+      "sha256": "434b483934afc6a892e4e2b601930cfdb67fa62bd21e5061601ca36beef55026",
+      "size": 69580437,
+      "url": "https://github.com/KEYTRON/K1OS/releases/download/packages/go-1.22.3-x86_64.warp"
+    },
+    "node": {
+      "version": "20.14.0",
+      "description": "Node.js JavaScript runtime",
+      "sha256": "cd44e462716d2a2c85f84f5bb01042e6ed916cfa014610db45dbd99af05a0cb6",
+      "size": 37974339,
+      "url": "https://github.com/KEYTRON/K1OS/releases/download/packages-v1/node-20.14.0-x86_64.warp"
+    },
+    "tailscale": {
+      "version": "1.68.1",
+      "description": "Tailscale zero config VPN",
+      "sha256": "d13e71b7d8dde79c88b92fc53d0fde03244187e857e8db3f5114b77ab5455931",
+      "size": 27174216,
+      "url": "https://github.com/KEYTRON/K1OS/releases/download/packages-v1/tailscale-1.68.1-x86_64.warp"
     }
   }
 }

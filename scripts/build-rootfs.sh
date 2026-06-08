@@ -116,6 +116,44 @@ cd /root
 exec /usr/bin/fish --login
 EOF
 
+    # udhcpc default.script
+    log_info "Creating udhcpc default.script..."
+    mkdir -p "${ROOTFS_DIR}/usr/share/udhcpc"
+    install -Dm755 /dev/stdin "${ROOTFS_DIR}/usr/share/udhcpc/default.script" << 'EOF'
+#!/bin/sh
+[ -z "$1" ] && echo "Error: should be called from udhcpc" && exit 1
+RESOLV_CONF="/etc/resolv.conf"
+case "$1" in
+    deconfig)
+        ip addr flush dev "$interface"
+        ip link set "$interface" up
+        ;;
+    renew|bound)
+        ip addr add "$ip/$mask" dev "$interface" 2>/dev/null || ifconfig "$interface" "$ip" netmask "$mask"
+        if [ -n "$router" ]; then
+            for r in $router; do
+                ip route add default via "$r" dev "$interface" 2>/dev/null || route add default gw "$r" dev "$interface"
+            done
+        fi
+        if [ -n "$dns" ]; then
+            echo -n "" > "$RESOLV_CONF"
+            for d in $dns; do
+                echo "nameserver $d" >> "$RESOLV_CONF"
+            done
+        fi
+        ;;
+esac
+EOF
+
+    # Copy CA certificates from host for SSL support (needed by curl, git, warp)
+    log_info "Copying CA certificates from host..."
+    mkdir -p "${ROOTFS_DIR}/etc/ssl/certs"
+    if [ -f "/etc/ssl/certs/ca-certificates.crt" ]; then
+        cp -f /etc/ssl/certs/ca-certificates.crt "${ROOTFS_DIR}/etc/ssl/certs/ca-certificates.crt"
+    else
+        log_warn "Host CA certificates not found at /etc/ssl/certs/ca-certificates.crt"
+    fi
+
     # reboot / halt / poweroff через runit
     # rm -f сначала — файлы могут быть BusyBox-симлинками на ../bin/busybox
     rm -f "${ROOTFS_DIR}/sbin/reboot" "${ROOTFS_DIR}/sbin/halt" "${ROOTFS_DIR}/sbin/poweroff"
@@ -138,6 +176,10 @@ EOF
 sync
 exec /sbin/runit-init 0
 EOF
+
+    # Installer for K1OS
+    log_info "Creating k1os-install script..."
+    install -Dm755 "${ROOT_DIR}/scripts/k1os-install.sh" "${ROOTFS_DIR}/usr/sbin/k1os-install"
 
     # sudo — уже root, просто exec
     install -Dm755 /dev/stdin "${ROOTFS_DIR}/usr/bin/sudo" << 'EOF'
@@ -200,6 +242,21 @@ build_packages() {
 
     log_info "  -> warp..."
     bash "${PACKAGES_DIR}/warp/build.sh" all
+
+    #log_info "  -> k1de..."
+    #bash "${PACKAGES_DIR}/k1de/build.sh" all
+
+    log_info "  -> rust..."
+    bash "${PACKAGES_DIR}/rust/build.sh" all
+
+    log_info "  -> go..."
+    bash "${PACKAGES_DIR}/go/build.sh" all
+
+    log_info "  -> node..."
+    bash "${PACKAGES_DIR}/node/build.sh" all
+
+    log_info "  -> tailscale..."
+    bash "${PACKAGES_DIR}/tailscale/build.sh" all
 }
 
 main() {

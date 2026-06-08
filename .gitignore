@@ -111,3 +111,11 @@ __pycache__/
 
 # Documentation
 /docs/_build/
+packages/wlroots/build/
+
+# Package outputs
+*.warp
+packages/*/build/
+packages/*/pack_temp/
+packages/*/*.tar.*
+packages/*/*.tgz
