@@ -18,4 +18,9 @@ echo "k1os" > /proc/sys/kernel/hostname
 # Bring up loopback
 ip link set lo up 2>/dev/null || true
 
+# Bring up ethernet and get IP via DHCP in background
+ip link set eth0 up 2>/dev/null || true
+udhcpc -b -i eth0 2>/dev/null || true
+
 echo "Stage 1 complete"
+

@@ -67,11 +67,11 @@
       "url": "https://github.com/KEYTRON/K1OS/releases/download/packages/dropbear-2022.83-x86_64.warp"
     },
     "warp": {
-      "version": "0.2.0",
+      "version": "0.3.0",
       "description": "WARP package manager for K1OS",
       "sha256": "",
       "size": 0,
-      "url": "https://github.com/KEYTRON/K1OS/releases/download/packages/warp-0.2.0-x86_64.warp"
+      "url": "https://github.com/KEYTRON/K1OS/releases/download/packages-v1/warp-0.3.0-x86_64.warp"
     },
     "rust": {
       "version": "1.80.0",
