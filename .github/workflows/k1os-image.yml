@@ -39,6 +39,9 @@ jobs:
       - name: Set up Buildx
         uses: docker/setup-buildx-action@v3
 
+      - name: Install host dependencies
+        run: sudo apt-get update && sudo apt-get install -y libssl-dev zlib1g-dev libpcre2-dev libcurl4-openssl-dev pkg-config libffi-dev libreadline-dev libsqlite3-dev liblzma-dev libbz2-dev libncurses-dev libssh-dev libnghttp2-dev build-essential
+
       - name: Build image locally
         run: make image
 
