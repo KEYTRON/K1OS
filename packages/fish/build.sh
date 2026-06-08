@@ -64,12 +64,6 @@ pkg_install() {
     grep -qxF '/usr/bin/fish' "${ROOTFS_DIR}/etc/shells" 2>/dev/null \
         || echo '/usr/bin/fish' >> "${ROOTFS_DIR}/etc/shells"
 
-    # Copy shared libraries
-    mkdir -p "${ROOTFS_DIR}/lib64/"
-    for lib in $(ldd "${ROOTFS_DIR}/usr/bin/fish" 2>/dev/null | grep "=>" | awk '{print $3}' | grep -v "^$"); do
-        [ -f "$lib" ] && cp -n "$lib" "${ROOTFS_DIR}/lib64/" 2>/dev/null || true
-    done
-
     log_info "fish installed to ${ROOTFS_DIR}"
 }
 

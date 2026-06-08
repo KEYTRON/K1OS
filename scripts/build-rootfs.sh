@@ -15,7 +15,8 @@ log_error() { echo -e "${RED}[rootfs]${NC} $1"; }
 
 create_base_dirs() {
     log_info "Creating base directory structure..."
-    mkdir -p "${ROOTFS_DIR}"/{bin,sbin,lib,lib64,usr/{bin,sbin,lib,share},etc,var/{log,run,service},tmp,proc,sys,dev,run,home,root,mnt,opt}
+    mkdir -p "${ROOTFS_DIR}"/{bin,sbin,lib,usr/{bin,sbin,lib,share},etc,var/{log,run,service},tmp,proc,sys,dev,run,home,root,mnt,opt}
+    ln -sfn lib "${ROOTFS_DIR}/lib64"
     chmod 1777 "${ROOTFS_DIR}/tmp"
     chmod 700  "${ROOTFS_DIR}/root"
 }
@@ -214,18 +215,20 @@ EOF
 
 copy_libs() {
     log_info "Copying shared libraries..."
-    mkdir -p "${ROOTFS_DIR}/lib64"
+    mkdir -p "${ROOTFS_DIR}/lib"
+    mkdir -p "${ROOTFS_DIR}/lib/x86_64-linux-gnu"
 
     # Собираем все .so зависимости всех бинарников
     for bin in "${ROOTFS_DIR}/usr/bin/"* "${ROOTFS_DIR}/usr/sbin/"* "${ROOTFS_DIR}/sbin/"*; do
         [ -f "$bin" ] || continue
         ldd "$bin" 2>/dev/null | grep "=>" | awk '{print $3}' | grep -v '^$' | while read -r lib; do
-            [ -f "$lib" ] && cp -n "$lib" "${ROOTFS_DIR}/lib64/" 2>/dev/null || true
+            [ -f "$lib" ] && cp -n "$lib" "${ROOTFS_DIR}/lib/" 2>/dev/null || true
+            [ -f "$lib" ] && cp -n "$lib" "${ROOTFS_DIR}/lib/x86_64-linux-gnu/" 2>/dev/null || true
         done
     done
 
     # Динамический линкер — обязателен
-    cp -f /lib64/ld-linux-x86-64.so.2 "${ROOTFS_DIR}/lib64/"
+    cp -f /lib64/ld-linux-x86-64.so.2 "${ROOTFS_DIR}/lib/" || true
 }
 
 build_packages() {
