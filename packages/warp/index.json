@@ -69,8 +69,8 @@
     "warp": {
       "version": "0.3.0",
       "description": "WARP package manager for K1OS",
-      "sha256": "",
-      "size": 0,
+      "sha256": "1d922556b83f23470066858b2ac0301a2fcd709dbfec65fffda6f75bb0d96cbb",
+      "size": 29019,
       "url": "https://github.com/KEYTRON/K1OS/releases/download/packages-v1/warp-0.3.0-x86_64.warp"
     },
     "rust": {
