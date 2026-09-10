@@ -119,3 +119,6 @@ packages/*/build/
 packages/*/pack_temp/
 packages/*/*.tar.*
 packages/*/*.tgz
+
+# Rust build artifacts (k1de and any future Rust packages)
+packages/*/target/
