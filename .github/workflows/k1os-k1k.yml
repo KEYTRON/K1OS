@@ -1,0 +1,79 @@
+name: K1OS on K1K
+
+on:
+  push:
+    branches: [main]
+    tags: ["v*"]
+    paths:
+      - "Makefile"
+      - "k1k/**"
+      - "scripts/build-k1k.sh"
+      - ".github/workflows/k1os-k1k.yml"
+  pull_request:
+    paths:
+      - "Makefile"
+      - "k1k/**"
+      - "scripts/build-k1k.sh"
+      - ".github/workflows/k1os-k1k.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+# Builds the K1OS boot media on the K1K kernel: the kernel is taken from the
+# lab checkout of the private KEYTRON/K1K repository (/lab/git/K1K, read-only),
+# copied out of tree and built in release mode; then the ISO + FAT disk are
+# boot-tested in QEMU and, for tags, published as a GitHub release.
+jobs:
+  build:
+    runs-on: [self-hosted, k1lab, k1os]
+    timeout-minutes: 45
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          clean: false
+
+      - name: Build K1K kernel, ISO and disk
+        run: make K1K_SOURCE_DIR=/lab/git/K1K k1k iso disk
+
+      - name: Boot test (QEMU, 4 CPUs, NVMe disk)
+        run: make K1K_SOURCE_DIR=/lab/git/K1K test
+
+      - name: Upload boot media
+        uses: actions/upload-artifact@v4
+        with:
+          name: k1os-k1k
+          path: |
+            build/k1k/k1os-k1k.iso
+            build/k1k/k1os-k1k-disk.img
+            build/k1k/serial.log
+
+      - name: Publish release
+        if: startsWith(github.ref, 'refs/tags/v')
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          tag="${GITHUB_REF_NAME}"
+          mkdir -p dist
+          cp build/k1k/k1os-k1k.iso "dist/k1os-${tag}-k1k-x86_64.iso"
+          cp build/k1k/k1os-k1k-disk.img "dist/k1os-${tag}-k1k-disk-fat16.img"
+          cp build/k1k/k1k.elf "dist/k1os-${tag}-k1k-kernel.elf"
+          cp build/k1k/serial.log "dist/k1os-${tag}-boot-test.log"
+          (cd dist && sha256sum * > "k1os-${tag}-SHA256SUMS")
+          notes="K1OS ${tag} on the K1K kernel (K1K $(cat build/k1k/K1K_VERSION)).
+
+          Boot the ISO (BIOS or UEFI) with the FAT16 image attached as an NVMe drive:
+
+          \`\`\`
+          qemu-system-x86_64 -M q35 -m 512M -smp 4 -cdrom k1os-${tag}-k1k-x86_64.iso \\
+            -drive file=k1os-${tag}-k1k-disk-fat16.img,if=none,format=raw,id=nvme0 \\
+            -device nvme,drive=nvme0,serial=K1OS-NVME-0001 -serial stdio
+          \`\`\`
+
+          Container image: \`ghcr.io/keytron/k1os:latest\` (Linux-based user space, see README)."
+          if gh release view "$tag" >/dev/null 2>&1; then
+            gh release upload "$tag" dist/* --clobber
+          else
+            gh release create "$tag" dist/* --title "K1OS $tag" --notes "$notes" --prerelease
+          fi

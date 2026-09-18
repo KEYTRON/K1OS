@@ -1,0 +1,60 @@
+# One runner per repository (GitHub registers runners per repo). All three
+# share the image, the host Docker daemon, /dev/kvm and a read-only view of
+# the lab checkouts under /lab/git — that is how K1OS builds the private K1K
+# kernel without cross-repo tokens.
+x-runner: &runner
+  build: .
+  image: k1lab/gh-runner:latest
+  restart: unless-stopped
+  volumes:
+    - /var/run/docker.sock:/var/run/docker.sock
+    - ${LAB_GIT_DIR:-/home/keytron46/git}:/lab/git:ro
+  devices:
+    - /dev/kvm:/dev/kvm
+  mem_limit: 5g
+  cpus: 3
+
+services:
+  runner-k1k:
+    <<: *runner
+    container_name: gh-runner-k1k
+    environment:
+      REPO_URL: https://github.com/KEYTRON/K1K
+      RUNNER_NAME: k1lab-k1k
+      RUNNER_LABELS: k1k
+      RUNNER_TOKEN: ${K1K_RUNNER_TOKEN:-}
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ${LAB_GIT_DIR:-/home/keytron46/git}:/lab/git:ro
+      - runner-k1k:/runner
+
+  runner-k1os:
+    <<: *runner
+    container_name: gh-runner-k1os
+    environment:
+      REPO_URL: https://github.com/KEYTRON/K1OS
+      RUNNER_NAME: k1lab-k1os
+      RUNNER_LABELS: k1os
+      RUNNER_TOKEN: ${K1OS_RUNNER_TOKEN:-}
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ${LAB_GIT_DIR:-/home/keytron46/git}:/lab/git:ro
+      - runner-k1os:/runner
+
+  runner-warp:
+    <<: *runner
+    container_name: gh-runner-warp
+    environment:
+      REPO_URL: https://github.com/KEYTRON/WARP
+      RUNNER_NAME: k1lab-warp
+      RUNNER_LABELS: warp
+      RUNNER_TOKEN: ${WARP_RUNNER_TOKEN:-}
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ${LAB_GIT_DIR:-/home/keytron46/git}:/lab/git:ro
+      - runner-warp:/runner
+
+volumes:
+  runner-k1k:
+  runner-k1os:
+  runner-warp:

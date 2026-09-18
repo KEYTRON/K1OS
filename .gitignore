@@ -9,6 +9,7 @@
 
 # Build artifact directories
 /dist/
+/build/k1k/
 *.mod
 *.mod.c
 build/*.o

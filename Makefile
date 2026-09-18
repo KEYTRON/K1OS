@@ -1,14 +1,22 @@
-.PHONY: all clean help kernel rootfs iso image packages busybox runit fish curl git dropbear modules warp wayland wlroots k1de rust go
+.PHONY: all clean help kernel kernel-linux kernel-k1k k1k rootfs iso iso-linux iso-k1k disk test image packages busybox runit fish curl git dropbear modules warp wayland wlroots k1de rust go qemu qemu-linux qemu-k1k
 
 export CFLAGS := -O2 -pipe -march=x86-64 -mtune=generic
 export CXXFLAGS := $(CFLAGS)
 export CPPFLAGS :=
 export LDFLAGS :=
 
+# Which kernel the boot media is built on: `k1k` (default — our own kernel,
+# see KEYTRON/K1K) or `linux` (legacy Linux 7.0 profile).
+KERNEL      ?= k1k
+K1K_SOURCE_DIR ?=
+export K1K_SOURCE_DIR
+
 KERNEL_DIR  := $(CURDIR)/kernel/linux-7.0
 CUSTOM_DIR  := $(CURDIR)/custom
 BUILD_DIR   := $(CURDIR)/build
 SCRIPTS_DIR := $(CURDIR)/scripts
+K1K_OUT     := $(BUILD_DIR)/k1k
+K1K_QEMU_DISK = -drive file=$(K1K_OUT)/k1os-k1k-disk.img,if=none,format=raw,id=nvme0 -device nvme,drive=nvme0,serial=K1OS-NVME-0001
 
 # Default target
 all: help
@@ -24,10 +32,12 @@ help:
 	@echo "  ╚═╝  ╚═╝ ╚═╝ ╚═════╝ ╚══════╝"
 	@echo "  Minimalist Developer OS"
 	@echo ""
-	@echo "Build targets:"
-	@echo "  make kernel     - Build Linux kernel"
-	@echo "  make rootfs     - Build rootfs (BusyBox + runit + fish)"
+	@echo "Build targets (KERNEL=$(KERNEL); use KERNEL=linux for the legacy profile):"
+	@echo "  make kernel     - Build the kernel (K1K from ../K1K or K1K_SOURCE_DIR)"
 	@echo "  make iso        - Build bootable ISO image"
+	@echo "  make disk       - Build the FAT16 service disk for the K1K profile"
+	@echo "  make test       - Boot the K1K ISO headless in QEMU and check the log"
+	@echo "  make rootfs     - Build Linux rootfs (BusyBox + runit + fish)"
 	@echo "  make all-build  - Full build: kernel + rootfs + iso"
 	@echo "  make image      - Build K1OS container image"
 	@echo ""
@@ -60,8 +70,38 @@ help:
 # Full build
 all-build: kernel rootfs iso
 
-# Kernel build
-kernel:
+# Kernel / ISO / QEMU dispatch on KERNEL.
+ifeq ($(KERNEL),k1k)
+kernel: kernel-k1k
+iso: iso-k1k
+qemu: qemu-k1k
+else
+kernel: kernel-linux
+iso: iso-linux
+qemu: qemu-linux
+endif
+
+# K1K profile: everything goes through scripts/build-k1k.sh into build/k1k/.
+kernel-k1k k1k:
+	@bash $(SCRIPTS_DIR)/build-k1k.sh kernel
+
+iso-k1k:
+	@bash $(SCRIPTS_DIR)/build-k1k.sh iso
+
+disk:
+	@bash $(SCRIPTS_DIR)/build-k1k.sh disk
+
+test:
+	@bash $(SCRIPTS_DIR)/build-k1k.sh test
+
+qemu-k1k:
+	@test -f $(K1K_OUT)/k1os-k1k.iso || $(MAKE) iso-k1k
+	@test -f $(K1K_OUT)/k1os-k1k-disk.img || $(MAKE) disk
+	qemu-system-x86_64 -M q35 -m 512M -smp 4 -enable-kvm -cpu host \
+		-cdrom $(K1K_OUT)/k1os-k1k.iso -boot d -serial stdio $(K1K_QEMU_DISK)
+
+# Linux kernel build (legacy profile)
+kernel-linux:
 	@echo "[kernel] Configuring and building Linux kernel..."
 	@if [ ! -d "$(KERNEL_DIR)" ]; then \
 		echo "ERROR: Kernel source not found at $(KERNEL_DIR)"; \
@@ -145,8 +185,8 @@ tailscale:
 image: rootfs
 	@docker build -t k1os:local -f $(CURDIR)/Dockerfile $(CURDIR)
 
-# ISO image
-iso:
+# ISO image (legacy Linux profile: GRUB + vmlinuz + initramfs + squashfs)
+iso-linux:
 	@bash $(SCRIPTS_DIR)/build-iso.sh
 
 # Custom kernel modules
@@ -159,8 +199,8 @@ modules:
 		fi; \
 	done
 
-# Test in QEMU
-qemu:
+# Test the Linux profile in QEMU
+qemu-linux:
 	@if [ ! -f "$(CURDIR)/k1os.iso" ]; then \
 		echo "ERROR: k1os.iso not found. Run: make iso"; \
 		exit 1; \

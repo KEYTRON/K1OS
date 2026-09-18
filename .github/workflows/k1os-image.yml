@@ -2,67 +2,63 @@ name: K1OS Container
 
 on:
   push:
+    branches: [main]
     paths:
       - "Dockerfile"
       - ".dockerignore"
-      - "Makefile"
       - "rootfs/**"
       - "scripts/build-rootfs.sh"
       - "packages/**"
       - ".github/workflows/k1os-image.yml"
-      - "README.md"
-      - "README.ru.md"
   pull_request:
     paths:
       - "Dockerfile"
       - ".dockerignore"
-      - "Makefile"
       - "rootfs/**"
       - "scripts/build-rootfs.sh"
       - "packages/**"
       - ".github/workflows/k1os-image.yml"
-      - "README.md"
-      - "README.ru.md"
   workflow_dispatch:
 
 permissions:
   contents: read
   packages: write
 
+# The rootfs (busybox, fish, python, warp, ...) takes hours to compile and is
+# not tracked in git; the lab runner sees the prebuilt tree of the lab checkout
+# at /lab/git/K1OS/rootfs and builds the image from it.
 jobs:
   image:
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, k1lab, k1os]
+    timeout-minutes: 30
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          clean: false
 
-      - name: Set up Buildx
-        uses: docker/setup-buildx-action@v3
+      - name: Stage prebuilt rootfs from the lab checkout
+        run: |
+          test -x /lab/git/K1OS/rootfs/usr/bin/fish
+          rsync -a --delete /lab/git/K1OS/rootfs/ rootfs/
+          du -sh rootfs
 
-      - name: Install host dependencies
-        run: sudo apt-get update && sudo apt-get install -y libssl-dev zlib1g-dev libpcre2-dev libcurl4-openssl-dev pkg-config libffi-dev libreadline-dev libsqlite3-dev liblzma-dev libbz2-dev libncurses-dev libssh-dev libnghttp2-dev libevent-dev libcap-dev cmake ninja-build rustc cargo build-essential
-
-      - name: Build image locally
-        run: make image
+      - name: Build image
+        run: docker build -t k1os:local -f Dockerfile .
 
       - name: Smoke test image
-        run: docker run --rm k1os:local /bin/sh -lc 'grep -q "^NAME=\"K1OS\"" /etc/os-release && /usr/bin/fish --version >/dev/null && warp --version >/dev/null && warp --help >/dev/null'
+        run: docker run --rm k1os:local /bin/sh -lc 'grep -q "^NAME=\"K1OS\"" /etc/os-release && /usr/bin/fish --version >/dev/null && warp --version && warp --help >/dev/null'
 
       - name: Log in to GHCR
-        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
-        uses: docker/login-action@v3
-        with:
-          registry: ghcr.io
-          username: ${{ github.repository_owner }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+        if: github.event_name != 'pull_request'
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u "${{ github.repository_owner }}" --password-stdin
 
       - name: Publish image to GHCR
-        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+        if: github.event_name != 'pull_request'
         run: |
           owner="${GITHUB_REPOSITORY_OWNER,,}"
           image="ghcr.io/${owner}/k1os"
           sha_tag="${GITHUB_SHA::7}"
-
           docker tag k1os:local "${image}:latest"
           docker tag k1os:local "${image}:${sha_tag}"
           docker push "${image}:latest"
