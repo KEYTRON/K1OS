@@ -72,10 +72,13 @@ impl Pty {
         // pty slave onto 0/1/2 itself, and letting `Command` also fiddle
         // with stdio risks a fight over ordering between the two.
         let mut cmd = Command::new(program);
-        cmd.env("TERM", "linux").env(
-            "PATH",
-            "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin",
-        );
+        cmd.current_dir("/root")
+            .env("TERM", "linux")
+            .env("HOME", "/root")
+            .env(
+                "PATH",
+                "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin",
+            );
 
         unsafe {
             cmd.pre_exec(move || {
