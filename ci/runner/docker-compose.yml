@@ -36,6 +36,7 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ${LAB_GIT_DIR:-/home/keytron46/git}:/lab/git:ro
+      - /var/tmp/k1lab:/var/tmp/k1lab
       - runner-k1k:/runner
 
   runner-k1os:
@@ -49,6 +50,7 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ${LAB_GIT_DIR:-/home/keytron46/git}:/lab/git:ro
+      - /var/tmp/k1lab:/var/tmp/k1lab
       - runner-k1os:/runner
 
   runner-warp:
@@ -62,6 +64,7 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ${LAB_GIT_DIR:-/home/keytron46/git}:/lab/git:ro
+      - /var/tmp/k1lab:/var/tmp/k1lab
       - runner-warp:/runner
 
 volumes:
