@@ -16,6 +16,9 @@ x-runner: &runner
   volumes:
     - /var/run/docker.sock:/var/run/docker.sock
     - ${LAB_GIT_DIR:-/home/keytron46/git}:/lab/git:ro
+    # Same path on host and in the runner: tests that bind-mount their scratch
+    # files into further containers (WARP e2e) must use a host-visible path.
+    - /var/tmp/k1lab:/var/tmp/k1lab
   devices:
     - /dev/kvm:/dev/kvm
   mem_limit: 5g
