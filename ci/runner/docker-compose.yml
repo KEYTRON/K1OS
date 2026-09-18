@@ -2,9 +2,16 @@
 # share the image, the host Docker daemon, /dev/kvm and a read-only view of
 # the lab checkouts under /lab/git — that is how K1OS builds the private K1K
 # kernel without cross-repo tokens.
+#
+# Host networking on purpose: the lab host bypasses DPI blocking of the
+# GitHub CDN (*.githubusercontent.com) with zapret, which only sees the host's
+# own traffic. Bridge-networked containers time out on release downloads.
 x-runner: &runner
-  build: .
+  build:
+    context: .
+    network: host
   image: k1lab/gh-runner:latest
+  network_mode: host
   restart: unless-stopped
   volumes:
     - /var/run/docker.sock:/var/run/docker.sock

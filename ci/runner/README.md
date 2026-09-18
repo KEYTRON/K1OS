@@ -20,6 +20,11 @@ What a runner sees:
 | `/lab/git` (read-only) | the lab checkouts; K1OS builds the private K1K kernel from `/lab/git/K1K` |
 | `/runner` (volume) | runner config, credentials and `_work` — persists between restarts |
 
+The containers use the host network: the lab host bypasses DPI blocking of
+`*.githubusercontent.com` with zapret, and only host-networked traffic gets
+that treatment (bridge-networked `docker build`s time out on GitHub release
+downloads — pass `--network=host` to `docker build` in jobs that need them).
+
 Workflows target them with `runs-on: [self-hosted, k1lab]` (plus `k1k`,
 `k1os` or `warp` if a job must land on a specific repo's runner). The image
 ships Rust nightly (`rustup`, `x86_64-unknown-none`, `rust-src`), QEMU + OVMF,
