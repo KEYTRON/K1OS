@@ -3,6 +3,13 @@
   "signature": "",
   "peer_list_url": "https://keytron-prime.org/warp/dashboard",
   "packages": {
+    "btop": {
+      "version": "1.4.7",
+      "description": "btop: resource monitor for CPU, memory, disks, network and processes (upstream static build)",
+      "sha256": "368eb9d87a6bd388e95e49698fc3632bf4d888f02479c886331aebaf9c589c1e",
+      "size": 1047731,
+      "url": "https://github.com/KEYTRON/K1OS/raw/packages/btop-1.4.7-x86_64.warp"
+    },
     "go": {
       "version": "1.22.3",
       "description": "Go compiler and toolchain",
@@ -10,12 +17,26 @@
       "size": 69580437,
       "url": "https://github.com/KEYTRON/K1OS/raw/packages/go-1.22.3-x86_64.warp"
     },
+    "jq": {
+      "version": "1.8.2",
+      "description": "jq: command-line JSON processor (upstream static build)",
+      "sha256": "078e9080c03e2a2ce65e9614482b24996f9b6fdfa6db2e31bffc3967cb772fab",
+      "size": 1012502,
+      "url": "https://github.com/KEYTRON/K1OS/raw/packages/jq-1.8.2-x86_64.warp"
+    },
     "node": {
       "version": "20.14.0",
       "description": "Node.js JavaScript runtime",
       "sha256": "cd44e462716d2a2c85f84f5bb01042e6ed916cfa014610db45dbd99af05a0cb6",
       "size": 37974339,
       "url": "https://github.com/KEYTRON/K1OS/raw/packages/node-20.14.0-x86_64.warp"
+    },
+    "ripgrep": {
+      "version": "15.2.0",
+      "description": "ripgrep (rg): recursively search directories for a regex pattern, very fast (upstream static build)",
+      "sha256": "0d96b34077b36810f2ce012db80b0077922abbe3d8c88e7d622c9e6fa183ade1",
+      "size": 2190485,
+      "url": "https://github.com/KEYTRON/K1OS/raw/packages/ripgrep-15.2.0-x86_64.warp"
     },
     "rust": {
       "version": "1.80.0",
