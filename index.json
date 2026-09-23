@@ -32,11 +32,11 @@
       "url": "https://github.com/KEYTRON/K1OS/raw/packages/tailscale-1.68.1-x86_64.warp"
     },
     "warp": {
-      "version": "0.4.0",
+      "version": "0.4.1",
       "description": "WARP package manager for K1OS",
-      "sha256": "ab379e6cc92f270f67c4e83a4e74f45446bcd031d445ab3677c5dad97e2d2231",
-      "size": 40978,
-      "url": "https://github.com/KEYTRON/K1OS/raw/packages/warp-0.4.0-x86_64.warp"
+      "sha256": "c95965d13f555e841f919843de7a88451934081de2c8b553a1976402dcdcc5c3",
+      "size": 41058,
+      "url": "https://github.com/KEYTRON/K1OS/raw/packages/warp-0.4.1-x86_64.warp"
     }
   }
 }
