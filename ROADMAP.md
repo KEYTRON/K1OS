@@ -25,5 +25,12 @@ Stages go in order: `[x]` is done, `[ ]` is planned. The current stage is the fi
 - [ ] Networking on K1K
 - [ ] Kernel integration docs (`docs/MIGRATION`) updated for K1K
 
+## Other architectures
+K1OS builds only for x86_64 today.
+- [ ] An aarch64 image, both on K1K and in the Linux profile
+- [ ] WARP packages for aarch64
+- [ ] Apple Silicon
+- [ ] RISC-V (riscv64) — once there is real hardware to test on
+
 ## Later
 - [ ] The K1DE graphical environment (postponed until the MVP)
