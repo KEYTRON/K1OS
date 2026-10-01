@@ -133,15 +133,15 @@
       }
     },
     "warp": {
-      "version": "0.4.7",
+      "version": "0.4.8",
       "description": "WARP package manager for K1OS",
       "descriptions": {
         "ru": "Менеджер пакетов WARP для K1OS",
         "de": "Paketmanager WARP für K1OS"
       },
-      "sha256": "a3d09a35b3ec1416cc6f81819850ad655e2ca364816ca8c09e833ca2848601f4",
-      "size": 95374,
-      "url": "https://github.com/KEYTRON/K1OS/raw/packages/warp-0.4.7-x86_64.warp",
+      "sha256": "c0d08370ab5a125407f79fe308a7db618fc025ae1d096a39275aa09c26435e18",
+      "size": 95316,
+      "url": "https://github.com/KEYTRON/K1OS/raw/packages/warp-0.4.8-x86_64.warp",
       "builds": {
         "android-aarch64": {
           "version": "0.4.7",
@@ -150,44 +150,51 @@
           "url": "https://github.com/KEYTRON/K1OS/raw/packages/warp-0.4.7-android_aarch64.warp"
         },
         "linux-aarch64": {
-          "version": "0.4.7",
-          "sha256": "233eb79680dbb977c4be1e8ba7ea287a0107f792c1680eb59610fa65aac2c703",
-          "size": 94340,
-          "url": "https://github.com/KEYTRON/K1OS/raw/packages/warp-0.4.7-aarch64.warp"
+          "version": "0.4.8",
+          "sha256": "40871a15ae4380ecc5ba3ff49cb802342749beb4f82c2e3f5986f3b1ef2e2a6c",
+          "size": 94044,
+          "url": "https://github.com/KEYTRON/K1OS/raw/packages/warp-0.4.8-aarch64.warp"
         },
         "linux-x86_64": {
-          "version": "0.4.7",
-          "sha256": "a3d09a35b3ec1416cc6f81819850ad655e2ca364816ca8c09e833ca2848601f4",
-          "size": 95374,
-          "url": "https://github.com/KEYTRON/K1OS/raw/packages/warp-0.4.7-x86_64.warp"
+          "version": "0.4.8",
+          "sha256": "c0d08370ab5a125407f79fe308a7db618fc025ae1d096a39275aa09c26435e18",
+          "size": 95316,
+          "url": "https://github.com/KEYTRON/K1OS/raw/packages/warp-0.4.8-x86_64.warp"
         },
         "linux-x86_64-static": {
-          "version": "0.4.7",
-          "sha256": "df22ef0b27c23339c8ded901627a78a2cc00000fde6ca842952dffb3d28251df",
-          "size": 2897639,
-          "url": "https://github.com/KEYTRON/K1OS/raw/packages/warp-0.4.7-x86_64_static.warp",
+          "version": "0.4.8",
+          "sha256": "25a562fde2148bb7df34c4efbec66f1f64bd1ee06c87739b76d154af83a428e0",
+          "size": 2897300,
+          "url": "https://github.com/KEYTRON/K1OS/raw/packages/warp-0.4.8-x86_64_static.warp",
           "deltas": [
             {
               "from_version": "0.4.5",
               "from_sha256": "be2125bcc2a38e19d96407a5bcd9646383fbfbf0082beef31190ad6a6613f4d1",
-              "url": "https://github.com/KEYTRON/K1OS/raw/packages/warp-0.4.5-to-0.4.7-x86_64_static.warpdelta",
-              "sha256": "db9c26346e37b01f31dbb19fd462424e440f1e355a64223f0142e57e93efce31",
-              "size": 2469732
+              "url": "https://github.com/KEYTRON/K1OS/raw/packages/warp-0.4.5-to-0.4.8-x86_64_static.warpdelta",
+              "sha256": "d0a16235e4d21313eab336d91584e4e782312688bb50838d8d318f2cb6a37ada",
+              "size": 2469393
             },
             {
               "from_version": "0.4.6",
               "from_sha256": "0de61e7948b4407c44362a10208a5e21c283a52830ce23aeac1b227ff7dbb6d7",
-              "url": "https://github.com/KEYTRON/K1OS/raw/packages/warp-0.4.6-to-0.4.7-x86_64_static.warpdelta",
-              "sha256": "42d69d931539359a18e149795bbc9fa3a80a4055cfc6d71592d1005c81539e73",
-              "size": 2465006
+              "url": "https://github.com/KEYTRON/K1OS/raw/packages/warp-0.4.6-to-0.4.8-x86_64_static.warpdelta",
+              "sha256": "dbfeead950c75940dda0b7900b0b18912f43f5bf82e962ed87837ab2beb57940",
+              "size": 2464667
+            },
+            {
+              "from_version": "0.4.7",
+              "from_sha256": "df22ef0b27c23339c8ded901627a78a2cc00000fde6ca842952dffb3d28251df",
+              "url": "https://github.com/KEYTRON/K1OS/raw/packages/warp-0.4.7-to-0.4.8-x86_64_static.warpdelta",
+              "sha256": "91eefc75c58a3b74dcf7b581945e7bb7795ccec3d1705335825197f814525609",
+              "size": 2264004
             }
           ]
         },
         "macos-aarch64": {
-          "version": "0.4.7",
-          "sha256": "aad47a36f2069e92960a03462358ece0cbbbf362cb342721382465ad3dc5a9ab",
-          "size": 92386,
-          "url": "https://github.com/KEYTRON/K1OS/raw/packages/warp-0.4.7-macos_aarch64.warp"
+          "version": "0.4.8",
+          "sha256": "afff8d8f7b82570426a9fa8746e9ffc8574ee9007d1dcf5d6160dc437bae6ca9",
+          "size": 92447,
+          "url": "https://github.com/KEYTRON/K1OS/raw/packages/warp-0.4.8-macos_aarch64.warp"
         }
       }
     },
@@ -304,6 +311,45 @@
           "sha256": "5581bbce22a1466acc9f8389316be061c8c8fa3f18a21be625a10e69bfcf43ff",
           "size": 92031,
           "url": "https://github.com/KEYTRON/K1OS/raw/packages/warp-0.4.6-macos_aarch64.warp"
+        }
+      }
+    },
+    "warp@0.4.7": {
+      "version": "0.4.7",
+      "description": "WARP package manager for K1OS",
+      "sha256": "a3d09a35b3ec1416cc6f81819850ad655e2ca364816ca8c09e833ca2848601f4",
+      "size": 95374,
+      "url": "https://github.com/KEYTRON/K1OS/raw/packages/warp-0.4.7-x86_64.warp",
+      "builds": {
+        "android-aarch64": {
+          "version": "0.4.7",
+          "sha256": "b7cb388593616b015cf77166d6058956ec238af7cf3fbd987ad89546f6d30b4b",
+          "size": 95091,
+          "url": "https://github.com/KEYTRON/K1OS/raw/packages/warp-0.4.7-android_aarch64.warp"
+        },
+        "linux-aarch64": {
+          "version": "0.4.7",
+          "sha256": "233eb79680dbb977c4be1e8ba7ea287a0107f792c1680eb59610fa65aac2c703",
+          "size": 94340,
+          "url": "https://github.com/KEYTRON/K1OS/raw/packages/warp-0.4.7-aarch64.warp"
+        },
+        "linux-x86_64": {
+          "version": "0.4.7",
+          "sha256": "a3d09a35b3ec1416cc6f81819850ad655e2ca364816ca8c09e833ca2848601f4",
+          "size": 95374,
+          "url": "https://github.com/KEYTRON/K1OS/raw/packages/warp-0.4.7-x86_64.warp"
+        },
+        "linux-x86_64-static": {
+          "version": "0.4.7",
+          "sha256": "df22ef0b27c23339c8ded901627a78a2cc00000fde6ca842952dffb3d28251df",
+          "size": 2897639,
+          "url": "https://github.com/KEYTRON/K1OS/raw/packages/warp-0.4.7-x86_64_static.warp"
+        },
+        "macos-aarch64": {
+          "version": "0.4.7",
+          "sha256": "aad47a36f2069e92960a03462358ece0cbbbf362cb342721382465ad3dc5a9ab",
+          "size": 92386,
+          "url": "https://github.com/KEYTRON/K1OS/raw/packages/warp-0.4.7-macos_aarch64.warp"
         }
       }
     }
