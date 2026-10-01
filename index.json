@@ -144,10 +144,10 @@
       "url": "https://github.com/KEYTRON/K1OS/raw/packages/warp-0.4.9-x86_64.warp",
       "builds": {
         "android-aarch64": {
-          "version": "0.4.7",
-          "sha256": "b7cb388593616b015cf77166d6058956ec238af7cf3fbd987ad89546f6d30b4b",
-          "size": 95091,
-          "url": "https://github.com/KEYTRON/K1OS/raw/packages/warp-0.4.7-android_aarch64.warp"
+          "version": "0.4.9",
+          "sha256": "146f46f04ab34f4068f59b349cdb767feeda65602cd11080bc54b24f2e78da34",
+          "size": 95407,
+          "url": "https://github.com/KEYTRON/K1OS/raw/packages/warp-0.4.9-android_aarch64.warp"
         },
         "linux-aarch64": {
           "version": "0.4.9",
