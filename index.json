@@ -133,27 +133,54 @@
       }
     },
     "warp": {
-      "version": "0.4.5",
+      "version": "0.4.6",
       "description": "WARP package manager for K1OS",
       "descriptions": {
         "ru": "Менеджер пакетов WARP для K1OS",
         "de": "Paketmanager WARP für K1OS"
       },
-      "sha256": "be2125bcc2a38e19d96407a5bcd9646383fbfbf0082beef31190ad6a6613f4d1",
-      "size": 2895784,
-      "url": "https://github.com/KEYTRON/K1OS/raw/packages/warp-0.4.5-x86_64.warp",
+      "sha256": "4324467d2ddf5df0e87c716bf312f5c3cb6634f7ce71dbcbe1f91ddbe8c59442",
+      "size": 94364,
+      "url": "https://github.com/KEYTRON/K1OS/raw/packages/warp-0.4.6-x86_64.warp",
       "builds": {
+        "android-aarch64": {
+          "version": "0.4.6",
+          "sha256": "692154c79ee9ea1c5f27f868fadfd2c21b80437e8396a6e8759b60d004a30a20",
+          "size": 94365,
+          "url": "https://github.com/KEYTRON/K1OS/raw/packages/warp-0.4.6-android_aarch64.warp"
+        },
+        "linux-aarch64": {
+          "version": "0.4.6",
+          "sha256": "3262a53d22cb8c075179d2c00541ad9e0ba98806368118b7251cb447faf4bbdc",
+          "size": 93930,
+          "url": "https://github.com/KEYTRON/K1OS/raw/packages/warp-0.4.6-aarch64.warp"
+        },
         "linux-x86_64": {
-          "version": "0.4.5",
-          "sha256": "be2125bcc2a38e19d96407a5bcd9646383fbfbf0082beef31190ad6a6613f4d1",
-          "size": 2895784,
-          "url": "https://github.com/KEYTRON/K1OS/raw/packages/warp-0.4.5-x86_64.warp"
+          "version": "0.4.6",
+          "sha256": "4324467d2ddf5df0e87c716bf312f5c3cb6634f7ce71dbcbe1f91ddbe8c59442",
+          "size": 94364,
+          "url": "https://github.com/KEYTRON/K1OS/raw/packages/warp-0.4.6-x86_64.warp"
         },
         "linux-x86_64-static": {
-          "version": "0.4.5",
-          "sha256": "be2125bcc2a38e19d96407a5bcd9646383fbfbf0082beef31190ad6a6613f4d1",
-          "size": 2895784,
-          "url": "https://github.com/KEYTRON/K1OS/raw/packages/warp-0.4.5-x86_64_static.warp"
+          "version": "0.4.6",
+          "sha256": "0de61e7948b4407c44362a10208a5e21c283a52830ce23aeac1b227ff7dbb6d7",
+          "size": 2896089,
+          "url": "https://github.com/KEYTRON/K1OS/raw/packages/warp-0.4.6-x86_64_static.warp",
+          "deltas": [
+            {
+              "from_version": "0.4.5",
+              "from_sha256": "be2125bcc2a38e19d96407a5bcd9646383fbfbf0082beef31190ad6a6613f4d1",
+              "url": "https://github.com/KEYTRON/K1OS/raw/packages/warp-0.4.5-to-0.4.6-x86_64_static.warpdelta",
+              "sha256": "76341a8a4159886d428d79149ed4daed106afa0b142ddf60177f96bca0603b75",
+              "size": 2483726
+            }
+          ]
+        },
+        "macos-aarch64": {
+          "version": "0.4.6",
+          "sha256": "5581bbce22a1466acc9f8389316be061c8c8fa3f18a21be625a10e69bfcf43ff",
+          "size": 92031,
+          "url": "https://github.com/KEYTRON/K1OS/raw/packages/warp-0.4.6-macos_aarch64.warp"
         }
       }
     },
@@ -212,6 +239,27 @@
       "sha256": "e07dad9d736df6601e1d05dff826bed2525a357cb1f415796b7ff49a4c16c2e1",
       "size": 58912,
       "url": "https://github.com/KEYTRON/K1OS/raw/packages/warp-0.4.4-x86_64.warp"
+    },
+    "warp@0.4.5": {
+      "version": "0.4.5",
+      "description": "WARP package manager for K1OS",
+      "sha256": "be2125bcc2a38e19d96407a5bcd9646383fbfbf0082beef31190ad6a6613f4d1",
+      "size": 2895784,
+      "url": "https://github.com/KEYTRON/K1OS/raw/packages/warp-0.4.5-x86_64.warp",
+      "builds": {
+        "linux-x86_64": {
+          "version": "0.4.5",
+          "sha256": "be2125bcc2a38e19d96407a5bcd9646383fbfbf0082beef31190ad6a6613f4d1",
+          "size": 2895784,
+          "url": "https://github.com/KEYTRON/K1OS/raw/packages/warp-0.4.5-x86_64.warp"
+        },
+        "linux-x86_64-static": {
+          "version": "0.4.5",
+          "sha256": "be2125bcc2a38e19d96407a5bcd9646383fbfbf0082beef31190ad6a6613f4d1",
+          "size": 2895784,
+          "url": "https://github.com/KEYTRON/K1OS/raw/packages/warp-0.4.5-x86_64_static.warp"
+        }
+      }
     }
   }
 }
