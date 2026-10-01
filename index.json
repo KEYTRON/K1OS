@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-10-01",
+  "timestamp": "2026-10-02",
   "signature": "",
   "peer_list_url": "https://keytron-prime.org/warp/peers",
   "packages": {
@@ -12,7 +12,15 @@
       },
       "sha256": "368eb9d87a6bd388e95e49698fc3632bf4d888f02479c886331aebaf9c589c1e",
       "size": 1047731,
-      "url": "https://github.com/KEYTRON/K1OS/raw/packages/btop-1.4.7-x86_64.warp"
+      "url": "https://github.com/KEYTRON/K1OS/raw/packages/btop-1.4.7-x86_64_static.warp",
+      "builds": {
+        "linux-x86_64-static": {
+          "version": "1.4.7",
+          "sha256": "368eb9d87a6bd388e95e49698fc3632bf4d888f02479c886331aebaf9c589c1e",
+          "size": 1047731,
+          "url": "https://github.com/KEYTRON/K1OS/raw/packages/btop-1.4.7-x86_64_static.warp"
+        }
+      }
     },
     "go": {
       "version": "1.22.3",
@@ -23,7 +31,15 @@
       },
       "sha256": "434b483934afc6a892e4e2b601930cfdb67fa62bd21e5061601ca36beef55026",
       "size": 69580437,
-      "url": "https://github.com/KEYTRON/K1OS/raw/packages/go-1.22.3-x86_64.warp"
+      "url": "https://github.com/KEYTRON/K1OS/raw/packages/go-1.22.3-x86_64_static.warp",
+      "builds": {
+        "linux-x86_64-static": {
+          "version": "1.22.3",
+          "sha256": "434b483934afc6a892e4e2b601930cfdb67fa62bd21e5061601ca36beef55026",
+          "size": 69580437,
+          "url": "https://github.com/KEYTRON/K1OS/raw/packages/go-1.22.3-x86_64_static.warp"
+        }
+      }
     },
     "jq": {
       "version": "1.8.2",
@@ -34,7 +50,21 @@
       },
       "sha256": "078e9080c03e2a2ce65e9614482b24996f9b6fdfa6db2e31bffc3967cb772fab",
       "size": 1012502,
-      "url": "https://github.com/KEYTRON/K1OS/raw/packages/jq-1.8.2-x86_64.warp"
+      "url": "https://github.com/KEYTRON/K1OS/raw/packages/jq-1.8.2-x86_64_static.warp",
+      "builds": {
+        "linux-x86_64-static": {
+          "version": "1.8.2",
+          "sha256": "078e9080c03e2a2ce65e9614482b24996f9b6fdfa6db2e31bffc3967cb772fab",
+          "size": 1012502,
+          "url": "https://github.com/KEYTRON/K1OS/raw/packages/jq-1.8.2-x86_64_static.warp"
+        },
+        "macos-aarch64": {
+          "version": "1.8.2",
+          "sha256": "fd0517df1b7e996a841062c1bd3c17beabf243305825160c927fe5b0b4280f00",
+          "size": 307265,
+          "url": "https://github.com/KEYTRON/K1OS/raw/packages/jq-1.8.2-macos_aarch64.warp"
+        }
+      }
     },
     "node": {
       "version": "20.14.0",
@@ -56,7 +86,21 @@
       },
       "sha256": "0d96b34077b36810f2ce012db80b0077922abbe3d8c88e7d622c9e6fa183ade1",
       "size": 2190485,
-      "url": "https://github.com/KEYTRON/K1OS/raw/packages/ripgrep-15.2.0-x86_64.warp"
+      "url": "https://github.com/KEYTRON/K1OS/raw/packages/ripgrep-15.2.0-x86_64_static.warp",
+      "builds": {
+        "linux-x86_64-static": {
+          "version": "15.2.0",
+          "sha256": "0d96b34077b36810f2ce012db80b0077922abbe3d8c88e7d622c9e6fa183ade1",
+          "size": 2190485,
+          "url": "https://github.com/KEYTRON/K1OS/raw/packages/ripgrep-15.2.0-x86_64_static.warp"
+        },
+        "macos-aarch64": {
+          "version": "15.2.0",
+          "sha256": "9780cc5d40e806f7543d150af44bbc1fb30726636b4ab6dda2b7f6ec8f02ff64",
+          "size": 1684434,
+          "url": "https://github.com/KEYTRON/K1OS/raw/packages/ripgrep-15.2.0-macos_aarch64.warp"
+        }
+      }
     },
     "rust": {
       "version": "1.80.0",
@@ -78,7 +122,15 @@
       },
       "sha256": "d13e71b7d8dde79c88b92fc53d0fde03244187e857e8db3f5114b77ab5455931",
       "size": 27174216,
-      "url": "https://github.com/KEYTRON/K1OS/raw/packages/tailscale-1.68.1-x86_64.warp"
+      "url": "https://github.com/KEYTRON/K1OS/raw/packages/tailscale-1.68.1-x86_64_static.warp",
+      "builds": {
+        "linux-x86_64-static": {
+          "version": "1.68.1",
+          "sha256": "d13e71b7d8dde79c88b92fc53d0fde03244187e857e8db3f5114b77ab5455931",
+          "size": 27174216,
+          "url": "https://github.com/KEYTRON/K1OS/raw/packages/tailscale-1.68.1-x86_64_static.warp"
+        }
+      }
     },
     "warp": {
       "version": "0.4.5",
