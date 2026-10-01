@@ -1,0 +1,34 @@
+{
+  "btop": {
+    "ru": "btop: монитор ресурсов: процессор, память, диски, сеть и процессы (официальная статическая сборка)",
+    "de": "btop: Ressourcenmonitor für CPU, Speicher, Festplatten, Netzwerk und Prozesse (offizieller statischer Build)"
+  },
+  "go": {
+    "ru": "Компилятор и набор инструментов Go",
+    "de": "Go-Compiler und Toolchain"
+  },
+  "jq": {
+    "ru": "jq: обработчик JSON в командной строке (официальная статическая сборка)",
+    "de": "jq: JSON-Prozessor für die Kommandozeile (offizieller statischer Build)"
+  },
+  "node": {
+    "ru": "Среда выполнения JavaScript Node.js",
+    "de": "JavaScript-Laufzeitumgebung Node.js"
+  },
+  "ripgrep": {
+    "ru": "ripgrep (rg): очень быстрый рекурсивный поиск по каталогам по регулярному выражению (официальная статическая сборка)",
+    "de": "ripgrep (rg): sehr schnelle rekursive Verzeichnissuche mit regulären Ausdrücken (offizieller statischer Build)"
+  },
+  "rust": {
+    "ru": "Компилятор Rust и менеджер пакетов Cargo",
+    "de": "Rust-Compiler und Paketmanager Cargo"
+  },
+  "tailscale": {
+    "ru": "Tailscale: VPN без настройки",
+    "de": "Tailscale: VPN ohne Konfiguration"
+  },
+  "warp": {
+    "ru": "Менеджер пакетов WARP для K1OS",
+    "de": "Paketmanager WARP für K1OS"
+  }
+}

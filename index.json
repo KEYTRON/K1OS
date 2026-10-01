@@ -6,6 +6,10 @@
     "btop": {
       "version": "1.4.7",
       "description": "btop: resource monitor for CPU, memory, disks, network and processes (upstream static build)",
+      "descriptions": {
+        "ru": "btop: монитор ресурсов: процессор, память, диски, сеть и процессы (официальная статическая сборка)",
+        "de": "btop: Ressourcenmonitor für CPU, Speicher, Festplatten, Netzwerk und Prozesse (offizieller statischer Build)"
+      },
       "sha256": "368eb9d87a6bd388e95e49698fc3632bf4d888f02479c886331aebaf9c589c1e",
       "size": 1047731,
       "url": "https://github.com/KEYTRON/K1OS/raw/packages/btop-1.4.7-x86_64.warp"
@@ -13,6 +17,10 @@
     "go": {
       "version": "1.22.3",
       "description": "Go compiler and toolchain",
+      "descriptions": {
+        "ru": "Компилятор и набор инструментов Go",
+        "de": "Go-Compiler und Toolchain"
+      },
       "sha256": "434b483934afc6a892e4e2b601930cfdb67fa62bd21e5061601ca36beef55026",
       "size": 69580437,
       "url": "https://github.com/KEYTRON/K1OS/raw/packages/go-1.22.3-x86_64.warp"
@@ -20,6 +28,10 @@
     "jq": {
       "version": "1.8.2",
       "description": "jq: command-line JSON processor (upstream static build)",
+      "descriptions": {
+        "ru": "jq: обработчик JSON в командной строке (официальная статическая сборка)",
+        "de": "jq: JSON-Prozessor für die Kommandozeile (offizieller statischer Build)"
+      },
       "sha256": "078e9080c03e2a2ce65e9614482b24996f9b6fdfa6db2e31bffc3967cb772fab",
       "size": 1012502,
       "url": "https://github.com/KEYTRON/K1OS/raw/packages/jq-1.8.2-x86_64.warp"
@@ -27,6 +39,10 @@
     "node": {
       "version": "20.14.0",
       "description": "Node.js JavaScript runtime",
+      "descriptions": {
+        "ru": "Среда выполнения JavaScript Node.js",
+        "de": "JavaScript-Laufzeitumgebung Node.js"
+      },
       "sha256": "cd44e462716d2a2c85f84f5bb01042e6ed916cfa014610db45dbd99af05a0cb6",
       "size": 37974339,
       "url": "https://github.com/KEYTRON/K1OS/raw/packages/node-20.14.0-x86_64.warp"
@@ -34,6 +50,10 @@
     "ripgrep": {
       "version": "15.2.0",
       "description": "ripgrep (rg): recursively search directories for a regex pattern, very fast (upstream static build)",
+      "descriptions": {
+        "ru": "ripgrep (rg): очень быстрый рекурсивный поиск по каталогам по регулярному выражению (официальная статическая сборка)",
+        "de": "ripgrep (rg): sehr schnelle rekursive Verzeichnissuche mit regulären Ausdrücken (offizieller statischer Build)"
+      },
       "sha256": "0d96b34077b36810f2ce012db80b0077922abbe3d8c88e7d622c9e6fa183ade1",
       "size": 2190485,
       "url": "https://github.com/KEYTRON/K1OS/raw/packages/ripgrep-15.2.0-x86_64.warp"
@@ -41,6 +61,10 @@
     "rust": {
       "version": "1.80.0",
       "description": "Rust compiler and Cargo package manager",
+      "descriptions": {
+        "ru": "Компилятор Rust и менеджер пакетов Cargo",
+        "de": "Rust-Compiler und Paketmanager Cargo"
+      },
       "sha256": "82053e835c052bd41057663689169b2260c10e8466567fa5dbd77195b66c8c7e",
       "size": 169656425,
       "url": "https://github.com/KEYTRON/K1OS/raw/packages/rust-1.80.0-x86_64.warp"
@@ -48,6 +72,10 @@
     "tailscale": {
       "version": "1.68.1",
       "description": "Tailscale zero config VPN",
+      "descriptions": {
+        "ru": "Tailscale: VPN без настройки",
+        "de": "Tailscale: VPN ohne Konfiguration"
+      },
       "sha256": "d13e71b7d8dde79c88b92fc53d0fde03244187e857e8db3f5114b77ab5455931",
       "size": 27174216,
       "url": "https://github.com/KEYTRON/K1OS/raw/packages/tailscale-1.68.1-x86_64.warp"
@@ -55,6 +83,10 @@
     "warp": {
       "version": "0.4.5",
       "description": "WARP package manager for K1OS",
+      "descriptions": {
+        "ru": "Менеджер пакетов WARP для K1OS",
+        "de": "Paketmanager WARP für K1OS"
+      },
       "sha256": "be2125bcc2a38e19d96407a5bcd9646383fbfbf0082beef31190ad6a6613f4d1",
       "size": 2895784,
       "url": "https://github.com/KEYTRON/K1OS/raw/packages/warp-0.4.5-x86_64.warp",
