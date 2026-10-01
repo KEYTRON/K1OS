@@ -53,11 +53,25 @@
       "url": "https://github.com/KEYTRON/K1OS/raw/packages/tailscale-1.68.1-x86_64.warp"
     },
     "warp": {
-      "version": "0.4.4",
+      "version": "0.4.5",
       "description": "WARP package manager for K1OS",
-      "sha256": "e07dad9d736df6601e1d05dff826bed2525a357cb1f415796b7ff49a4c16c2e1",
-      "size": 58912,
-      "url": "https://github.com/KEYTRON/K1OS/raw/packages/warp-0.4.4-x86_64.warp"
+      "sha256": "be2125bcc2a38e19d96407a5bcd9646383fbfbf0082beef31190ad6a6613f4d1",
+      "size": 2895784,
+      "url": "https://github.com/KEYTRON/K1OS/raw/packages/warp-0.4.5-x86_64.warp",
+      "builds": {
+        "linux-x86_64": {
+          "version": "0.4.5",
+          "sha256": "be2125bcc2a38e19d96407a5bcd9646383fbfbf0082beef31190ad6a6613f4d1",
+          "size": 2895784,
+          "url": "https://github.com/KEYTRON/K1OS/raw/packages/warp-0.4.5-x86_64.warp"
+        },
+        "linux-x86_64-static": {
+          "version": "0.4.5",
+          "sha256": "be2125bcc2a38e19d96407a5bcd9646383fbfbf0082beef31190ad6a6613f4d1",
+          "size": 2895784,
+          "url": "https://github.com/KEYTRON/K1OS/raw/packages/warp-0.4.5-x86_64_static.warp"
+        }
+      }
     },
     "warp@0.3.0": {
       "version": "0.3.0",
@@ -107,6 +121,13 @@
       "sha256": "c72909873ad52bacd93cf5a0322e9a7275c70fb1632e81e84779255cafd0333f",
       "size": 56290,
       "url": "https://github.com/KEYTRON/K1OS/raw/packages/warp-0.4.3-x86_64.warp"
+    },
+    "warp@0.4.4": {
+      "version": "0.4.4",
+      "description": "WARP package manager for K1OS",
+      "sha256": "e07dad9d736df6601e1d05dff826bed2525a357cb1f415796b7ff49a4c16c2e1",
+      "size": 58912,
+      "url": "https://github.com/KEYTRON/K1OS/raw/packages/warp-0.4.4-x86_64.warp"
     }
   }
 }
