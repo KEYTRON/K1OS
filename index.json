@@ -38,6 +38,12 @@
           "sha256": "434b483934afc6a892e4e2b601930cfdb67fa62bd21e5061601ca36beef55026",
           "size": 69580437,
           "url": "https://github.com/KEYTRON/K1OS/raw/packages/go-1.22.3-x86_64_static.warp"
+        },
+        "macos-aarch64": {
+          "version": "1.27.1",
+          "sha256": "27e57e45a9b03a1719ee90c016218b1606111e98a27b6842662c780557a73966",
+          "size": 69913291,
+          "url": "https://github.com/KEYTRON/K1OS/raw/packages/go-1.27.1-macos_aarch64.warp"
         }
       }
     },
