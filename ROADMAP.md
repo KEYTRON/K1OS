@@ -19,8 +19,8 @@ Stages go in order: `[x]` is done, `[ ]` is planned. The current stage is the fi
 - [x] First release, 1.0.0-alpha.1
 
 ## Converging the profiles
-- [ ] File protocol in K1K so services read files themselves
-- [ ] K1OS services delivered to `/SVC` as WARP packages
+- [x] File protocol in K1K so services read files themselves
+- [x] K1OS services delivered to `/SVC` as WARP packages (platform `k1k-x86_64`, WARP 0.4.12; the disk is staged by `warp --root … --platform k1k-x86_64 install`)
 - [ ] A terminal and shell on K1K
 - [ ] Networking on K1K
 - [ ] Kernel integration docs (`docs/MIGRATION`) updated for K1K

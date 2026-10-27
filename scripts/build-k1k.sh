@@ -57,8 +57,25 @@ sync_source() {
     log "K1K $(cat "${OUT_DIR}/K1K_VERSION") @ $(cat "${OUT_DIR}/K1K_COMMIT")"
 }
 
+# K1K stages the /SVC of its disk with WARP (platform k1k-x86_64): take the sibling WARP checkout,
+# the same one packages/warp/build.sh uses, or clone it.
+find_warp() {
+    if [ -n "${WARP_SOURCE_DIR:-}" ] && [ -f "${WARP_SOURCE_DIR}/tools/make-index.py" ]; then
+        echo "$(cd "${WARP_SOURCE_DIR}" && pwd)"; return
+    fi
+    if [ -f "${ROOT_DIR}/../WARP/tools/make-index.py" ]; then
+        echo "$(cd "${ROOT_DIR}/../WARP" && pwd)"; return
+    fi
+    if [ ! -d "${OUT_DIR}/warp-clone/.git" ]; then
+        log "Cloning WARP" >&2
+        git clone --depth=1 https://github.com/KEYTRON/WARP.git "${OUT_DIR}/warp-clone" >&2 \
+            || die "WARP source not found: set WARP_SOURCE_DIR or keep a ../WARP checkout"
+    fi
+    echo "${OUT_DIR}/warp-clone"
+}
+
 k1k_make() {
-    make -C "${SRC_DIR}" PROFILE=release "$@"
+    WARP_SRC="${WARP_SRC:-$(find_warp)}" make -C "${SRC_DIR}" PROFILE=release "$@"
 }
 
 build_kernel() {
@@ -123,7 +140,7 @@ run_test() {
     set -e
     tail -n 25 "${OUT_DIR}/serial.log"
     [ "$status" -eq 33 ] || die "boot test failed (qemu exit ${status})"
-    grep -q 'fs\] spawned HELLO.ELF' "${OUT_DIR}/serial.log" || die "fs did not start services from /SVC"
+    grep -q "started 'hello' from /SVC/HELLO.ELF" "${OUT_DIR}/serial.log" || die "fs did not start services from /SVC"
     log "Boot test passed"
 }
 
